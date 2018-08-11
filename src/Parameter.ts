@@ -4,7 +4,7 @@ import {AbstractParameter} from "./AbstractParameter";
 
 
 
-export class Parameter extends AbstractParameter {
+export class Parameter extends AbstractParameter<number> {
 
 
   min: number; 
@@ -24,7 +24,6 @@ export class Parameter extends AbstractParameter {
     this.value = init;
     this.label = label;
 
-    this.hasChanged = false;
   }
 
   getValue() : number{
@@ -33,7 +32,7 @@ export class Parameter extends AbstractParameter {
 
   randomize() {
     this.value = randomStep (this.min, this.max,  this.step); 
-    this.hasChanged = true; 
+    this.updateValue(this.value); 
   }
 
 
@@ -45,14 +44,6 @@ export class Parameter extends AbstractParameter {
     this.min = v;
   }
 
-  getHasChanged() {
-
-    let v = this.hasChanged;
-    this.hasChanged = false;
-
-    return v; 
-
-  }
 
 }
 

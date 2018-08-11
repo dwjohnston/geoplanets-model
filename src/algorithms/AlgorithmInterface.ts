@@ -1,15 +1,20 @@
+import { AbstractParameter } from "../AbstractParameter";
+import { RenderMap } from "../RenderMap";
+import { DrawPackage } from "../DrawPackage";
 
 /*
 Again, just defining an interface/way of doing things here.
 */
 
-class AlgorithmInterface {
+export class AlgorithmInterface {
 
 
-  constructor() {
+  label: string; 
+  params: AbstractParameter<any>[]; 
 
-    this.name ="some-name";
+  constructor(label: string) {
 
+    this.label = label;
     this.params = []; //These are just the parameters to be rendered on the screen and controled by the user.
     //You can still have other parameters defined.
 
@@ -26,19 +31,20 @@ class AlgorithmInterface {
 
   }
 
-  getParams() {
+  getParams() : AbstractParameter<any>[]{
     throw new Error("This method should be overridden by extending class");
 
     return [];
   }
 
-  tick() {
-
+  tick() : DrawPackage {  //TODO: switch these to the drawable interface
     throw new Error("This method should be overridden by extending class");
+  }
 
-    return [] //A list of drawable objects
+
+  getRenderMap() : RenderMap {
+    throw new Error ("Render map not implmented"); 
   }
 
 }
 
-export default AlgorithmInterface;

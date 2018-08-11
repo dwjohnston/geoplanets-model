@@ -1,5 +1,12 @@
-import {Parameter} from "../../../Parameter";
-import {BasePhaser} from "./BasePhaser";
+import {
+  Parameter
+} from "../../../Parameter";
+import {
+  BasePhaser
+} from "./BasePhaser";
+import {
+  AbstractParameter
+} from "../../../AbstractParameter";
 
 /***
 
@@ -12,32 +19,33 @@ import {BasePhaser} from "./BasePhaser";
   If you want a cos phaser, use Math.PI * 0.5 as init phase. 
 
 */
-export class SinePhaser
- {
-  distance: Parameter; 
-  speed: Parameter; 
-  baseSpeed: Parameter; 
-  basePhaser: BasePhaser; 
+export class SinePhaser extends AbstractParameter < number > {
+  distance: Parameter;
+  speed: Parameter;
+  baseSpeed: Parameter;
+  basePhaser: BasePhaser;
 
-  initPhase: number; 
+  initPhase: number;
 
-  value: number; 
+  value: number;
 
   constructor(
-    speedParam : Parameter,
+    speedParam: Parameter,
     baseSpeed = new Parameter(1, 25, 1, 6, "base-speed"),
     distance = new Parameter(0, 1, 0.001, 1, "distance"),
-    initPhase = 0){
+    initPhase = 0) {
+
+    super("");
 
     this.speed = speedParam;
-    this.baseSpeed = baseSpeed; 
+    this.baseSpeed = baseSpeed;
     this.initPhase = initPhase;
-    this.value = 0; 
+    this.value = 0;
     this.basePhaser = new BasePhaser(
       this.speed,
       this.baseSpeed,
-      this.initPhase); 
-    this.distance = distance; 
+      this.initPhase);
+    this.distance = distance;
     this.reset();
   }
 
@@ -51,19 +59,16 @@ export class SinePhaser
   }
 
   tick() {
-    this.basePhaser.tick(); 
+    this.basePhaser.tick();
     this.calcValue();
   }
 
-  getValue() :number {
-    return this.value; 
+  getValue(): number {
+    return this.value;
   }
 
-
-  getPhaser() : BasePhaser{
-    return this.basePhaser; 
+  getPhaser(): BasePhaser {
+    return this.basePhaser;
   }
 
 }
-
-

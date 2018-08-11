@@ -19,6 +19,7 @@
   "dependencies": {
     "blacksheep-react-canvas": "^2.0.1",
     "lodash": "^4.17.10",
-    "mathjs": "^5.0.4"
+    "mathjs": "^5.0.4",
+    "rxjs": "^6.2.2"
   }
 }

@@ -1,13 +1,37 @@
 
-import {Circle, Position, Color, Line, pointOnCircle, foo} from 'blacksheep-react-canvas';
+import {pointOnCircle, Position} from "blacksheep-geometry"; 
+import { GoldenRectanglePositioner } from './GoldenRectanglePositioner';
 
 
 class GoldenSpiralPositioner {
 
-  constructor(goldenRectanglePositioner) {
+
+  goldenRectanglePositioner: GoldenRectanglePositioner; 
+
+  curvePointQueue: Position[]; 
+  currentCurvePoint: Position; 
+  currentCurvePosition: Position; 
+  previousCurvePosition: Position; 
+  currentCurveRadius: number; 
+  currentCurveLength: number; 
+  currentSize: number; 
+  curvePhaseAdjust: number; 
+  constructor(goldenRectanglePositioner : GoldenRectanglePositioner) {
 
     this.goldenRectanglePositioner = goldenRectanglePositioner;
+
+    this.curvePointQueue = [];
+    this.currentCurvePoint = null;
+    this.currentCurvePosition = null;
+    this.previousCurvePosition =null; 
+
+    this.currentCurveRadius= 0;
+    this.currentSize = 0; 
+    this.curvePhaseAdjust = 0; 
+    this.currentCurveLength = 0; 
   }
+
+
 
   reset() {
 
@@ -27,11 +51,8 @@ class GoldenSpiralPositioner {
     this.goldenRectanglePositioner.tick();
 
     let myPhi =this.goldenRectanglePositioner.getMyPhi();
-
     let subPhase = this.goldenRectanglePositioner.stagePhaser.getSubPhase();
     let previousSubPhase = this.goldenRectanglePositioner.stagePhaser.getPreviousSubPhase();
-
-
     let invertMyPhi = 1 - (1/myPhi);
 
     /**
@@ -93,17 +114,15 @@ class GoldenSpiralPositioner {
   }
 
 
-  getPosition() {
+  getPosition() : Position{
     return this.currentCurvePosition;
   }
 
-  getPreviousPosition() {
+  getPreviousPosition() : Position {
     return this.previousCurvePosition;
   }
 
-  getPositions() {
 
-  }
 
 }
 
