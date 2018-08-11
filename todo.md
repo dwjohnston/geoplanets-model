@@ -1,0 +1,1 @@
+- remove lodash / look at the size of it

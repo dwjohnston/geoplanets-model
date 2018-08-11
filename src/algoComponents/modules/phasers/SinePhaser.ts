@@ -1,5 +1,5 @@
-import Parameter from "../../../Parameter";
-import BasePhaser from "./BasePhaser";
+import {Parameter} from "../../../Parameter";
+import {BasePhaser} from "./BasePhaser";
 
 /***
 
@@ -12,15 +12,31 @@ import BasePhaser from "./BasePhaser";
   If you want a cos phaser, use Math.PI * 0.5 as init phase. 
 
 */
-class SinePhaser {
+export class SinePhaser
+ {
+  distance: Parameter; 
+  speed: Parameter; 
+  baseSpeed: Parameter; 
+  basePhaser: BasePhaser; 
 
+  initPhase: number; 
 
-  constructor(speedParam, initPhase = 0, baseSpeed = new Parameter(1, 25, 1, 6, "base-speed"), distance = new Parameter(0, 1, 0.001, 1, "distance")){
+  value: number; 
+
+  constructor(
+    speedParam : Parameter,
+    baseSpeed = new Parameter(1, 25, 1, 6, "base-speed"),
+    distance = new Parameter(0, 1, 0.001, 1, "distance"),
+    initPhase = 0){
 
     this.speed = speedParam;
     this.baseSpeed = baseSpeed; 
     this.initPhase = initPhase;
-    this.basePhaser = new BasePhaser(this.speed, this.initPhase, this.baseSpeed); 
+    this.value = 0; 
+    this.basePhaser = new BasePhaser(
+      this.speed,
+      this.baseSpeed,
+      this.initPhase); 
     this.distance = distance; 
     this.reset();
   }
@@ -39,16 +55,15 @@ class SinePhaser {
     this.calcValue();
   }
 
-  getValue() {
+  getValue() :number {
     return this.value; 
   }
 
 
-  getPhaser() {
+  getPhaser() : BasePhaser{
     return this.basePhaser; 
   }
 
 }
 
 
-export default SinePhaser; 

@@ -1,25 +1,23 @@
 import {AbstractParameter} from "./AbstractParameter"; 
+import {Color} from "blacksheep-geometry"; 
+import { AbstractParameterJson } from "./AbstractParameter";
 
-export class ColorParameter {
+export class ColorParameter extends AbstractParameter{
 
-    constructor(color, label) {
-        this.color = color; 
-        this.label = label; 
+    value: Color; 
+    
+    constructor(label : string, color : Color) {
+        super(label); 
+        this.value = color; 
     }
 
     randomize() {
-        this.color.randomize(); 
+        this.value.randomize(); 
     }
 
-    toJson() {
-        const obj = {}; 
-        obj[this.label] = {
-            r: this.color.r, 
-            g: this.color.g, 
-            b: this.color.a, 
-            a: this.color.a
-        }
-
+    toJson() : AbstractParameterJson {
+        const obj : AbstractParameterJson = {}; 
+        obj[super.label] = this.value.toJson(); 
         return obj; 
     }
 }

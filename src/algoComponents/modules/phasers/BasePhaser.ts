@@ -1,4 +1,4 @@
-import Parameter from "../../../Parameter";
+import {Parameter} from "../../../Parameter";
 
 /***
 
@@ -7,14 +7,23 @@ import Parameter from "../../../Parameter";
   Has a single speed parameter, and returns the phase (a value between 0 - 2pi). Phase is increased on tick().
 
 */
-class BasePhaser {
+export class BasePhaser {
 
 
-  constructor(speedParam, initPhase = 0, baseSpeed = new Parameter(1, 25, 1, 6, "base-speed")){
+  baseSpeed: Parameter; 
+  speedParam: Parameter; 
+  initPhase: number; 
+  phase: number; 
+  previousPhase: number; 
 
-    this.speed = speedParam;
-    this.baseSpeed = baseSpeed; 
+
+  constructor(speedParam : Parameter, baseSpeed: Parameter,  initPhase :number = 0){
+
+    this.speedParam = speedParam;
+    this.baseSpeed = baseSpeed;
     this.initPhase = initPhase;
+    this.phase =initPhase; 
+    this.previousPhase =initPhase; 
 
     this.reset();
   }
@@ -22,24 +31,24 @@ class BasePhaser {
   reset() {
 
     this.phase = this.initPhase;
-    this.previousPhase = ((Math.PI * 2) - this.speed.getValue() * Math.PI) % (2* Math.PI);
+    this.previousPhase = ((Math.PI * 2) - this.speedParam.getValue() * Math.PI) % (2* Math.PI);
 
   }
 
   tick() {
 
     this.previousPhase = this.phase;
-    let realSpeed = this.speed.getValue() / this.baseSpeed.getValue();
+    let realSpeed = this.speedParam.getValue() / this.baseSpeed.getValue();
     this.phase +=  ((realSpeed/1000) * Math.PI) ;
 		this.phase = (this.phase + 2*Math.PI)   % (2*Math.PI);
 
   }
 
 
-  getPreviousPhase() {
+  getPreviousPhase() :number{
     return this.previousPhase;
   }
-  getPhase() {
+  getPhase() :number {
     return this.phase;
   }
 

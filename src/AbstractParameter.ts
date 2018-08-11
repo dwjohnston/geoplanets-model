@@ -11,19 +11,20 @@ export class AbstractParameter {
     constructor(label: string) {
 
         this.label = label; 
+
     }
 
     randomize() {
         throw "Error, randomize() not initialized"; 
     }
 
-    toJson() : any {
+    toJson() : AbstractParameterJson {
         const obj : AbstractParameterJson = {}; 
         obj[this.label] = this.value; 
         return obj; 
     }
 
-    fromJson(json : any) {
+    fromJson(json : AbstractParameterJson) {
 
     }
 }

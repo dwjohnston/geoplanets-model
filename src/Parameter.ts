@@ -1,37 +1,47 @@
-import _ from 'lodash'; 
+import {randomStep} from 'davids-toolbox'; 
+
 import {AbstractParameter} from "./AbstractParameter"; 
 
-function round(number, increment, offset) {
-  return Math.ceil((number - offset) / increment ) * increment + offset;
-}
 
-class Parameter extends AbstractParameter {
 
-  constructor(min, max, step, init, label){
-    super();
+export class Parameter extends AbstractParameter {
+
+
+  min: number; 
+  max: number; 
+  step: number; 
+  init: number; 
+  value: number; 
+
+
+
+  constructor(min: number, max :number, step :number, init :number, label: string){
+    super(label);
     this.min = min;
     this.max = max;
     this.step = step;
+    this.init = init; 
     this.value = init;
     this.label = label;
+
     this.hasChanged = false;
   }
 
-  getValue(){
+  getValue() : number{
     return this.value;
   }
 
   randomize() {
-    this.value = round(_.random(this.min, this.max), this.step, 0); 
+    this.value = randomStep (this.min, this.max,  this.step); 
     this.hasChanged = true; 
   }
 
 
-  setMax(v) {
+  setMax(v :number) {
     this.max = v;
   }
 
-  setMin(v) {
+  setMin(v :number) {
     this.min = v;
   }
 
@@ -46,4 +56,3 @@ class Parameter extends AbstractParameter {
 
 }
 
-export default Parameter;

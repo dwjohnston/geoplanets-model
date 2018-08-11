@@ -1,4 +1,4 @@
-import Parameter from "./Parameter";
+import {Parameter} from "./Parameter";
 
 class LfoParam extends Parameter {
 

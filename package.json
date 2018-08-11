@@ -2,10 +2,10 @@
   "name": "geoplanets-model",
   "version": "1.0.0",
   "description": "Framework agnostic data/algorithm model for the geoplanets interactive art generator",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc",
+    "start": "tsc -w",
     "build": "tsc"
   },
   "author": "",
@@ -17,6 +17,8 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "blacksheep-react-canvas": "^2.0.1"
+    "blacksheep-react-canvas": "^2.0.1",
+    "lodash": "^4.17.10",
+    "mathjs": "^5.0.4"
   }
 }

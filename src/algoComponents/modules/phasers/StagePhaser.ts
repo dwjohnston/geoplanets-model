@@ -1,4 +1,4 @@
-import {floor} from 'lodash'; 
+import {BasePhaser} from './BasePhaser';
 /****
 
   Stage Phaser
@@ -6,64 +6,71 @@ import {floor} from 'lodash';
   For a given BasePhaser and nStages, tell me what stage the phase is at.
 
 **/
-class StagePhaser{
+export class StagePhaser{
 
+  basePhaser: BasePhaser; 
+  nStages: number; 
 
-  constructor(nStages, basePhaser) {
+  piLength: number; 
+
+  stage: number; 
+  previousStage: number; 
+  subPhase:number; 
+  previousSubPhase: number; 
+
+  constructor(basePhaser: BasePhaser, nStages : number) {
     this.basePhaser = basePhaser;
     this.nStages = nStages;
-
-
     this.piLength = (2 * Math.PI) / this.nStages;
+
+    this.stage = 0; 
+    this.previousStage =0; 
+    this.subPhase = 0; 
+    this.previousSubPhase = 0; 
   }
 
   reset() {
-
     this.basePhaser.reset();
-
     this.calcStagesAndSubPhases();
-
   }
 
 
-  getPhase() {
-    return this.basePhaser.getPhase();
-
-  }
-
-  getPreviousPhase() {
+  getPhase() : number {
     return this.basePhaser.getPhase();
   }
 
-  getStage() {
+  getPreviousPhase() :number {
+    return this.basePhaser.getPhase();
+  }
+
+  getStage() :number {
     return this.stage;
   }
 
-  getPreviousStage() {
+  getPreviousStage() :number{
     return this.previousStage;
   }
 
   /**
     SubPhase is a 0-1 value, representing the proporition the point is along a given stage.
   */
-  getSubPhase() {
+  getSubPhase() :number{
     return this.subPhase;
   }
 
-  getPreviousSubPhase() {
+  getPreviousSubPhase() :number {
     return this.previousSubPhase;
   }
 
 
-  isOnCorner() {
+  isOnCorner() : boolean {
     return (this.previousSubPhase > this.subPhase);
   }
 
 
   calcStagesAndSubPhases() {
     this.previousStage = this.stage;
-    this.stage =floor(this.basePhaser.getPhase() / this.piLength);
-
+    this.stage =Math.floor(this.basePhaser.getPhase() / this.piLength);
 
     this.previousSubPhase = this.subPhase;
     this.subPhase =  (this.basePhaser.getPhase() % this.piLength) /this.piLength;
@@ -71,12 +78,10 @@ class StagePhaser{
 
   tick() {
     this.basePhaser.tick();
-
     this.calcStagesAndSubPhases();
-
   }
 
 
 }
 
-export default StagePhaser;
+

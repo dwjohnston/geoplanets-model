@@ -1,32 +1,45 @@
 
-import StagePhaser from "../phasers/StagePhaser";
+import {StagePhaser} from "../phasers/StagePhaser";
 import MathJs from 'mathjs';
-import {Position} from "blacksheep-react-canvas";
+import {Position} from "blacksheep-geometry";
+import { Parameter } from "../../../Parameter";
 
-class GoldenRectanglePositioner {
+export class GoldenRectanglePositioner {
 
+  speed: Parameter; 
+  distance: Parameter; 
+  center: Position; 
 
-  constructor(speed, distance, center,  stagePhaser){
+  stagePhaser: StagePhaser;
+  myPhi: number; 
+
+  currentSize: number; 
+  currentPosition: Position; 
+  previousPosition: Position; 
+  previousPositionStartCorner : Position; 
+
+  constructor(
+    speed : Parameter,
+    distance : Parameter,
+    center : Position,
+    stagePhaser : StagePhaser
+  ){
     this.speed = speed;
     this.distance = distance;
     this.center = center;
     this.stagePhaser = stagePhaser;
-
-
     this.myPhi = MathJs.phi;  //We are setting phi here - so we can play around with change the value of it later.
+
+    this.currentSize =0; 
 
     this.reset();
   }
 
   reset() {
     this.stagePhaser.reset();
-
     this.currentSize = this.distance.getValue();
-
-
     this.currentPosition = new Position(this.center.x + this.currentSize * this.myPhi /2, this.center.y - this.currentSize/2);
-    this.previousPosition =new Position( this.center.x + this.currentSize * this.myPhi /2, this.center.y - this.currentSize/2); //TODO: change this. To what? Jesus, this comment makes no sense.
-                                                                                                                                //
+    this.previousPosition =new Position( this.center.x + this.currentSize * this.myPhi /2, this.center.y - this.currentSize/2); //TODO: change this. To what? Jesus, this comment makes no sense
   }
 
   tick() {
@@ -97,29 +110,21 @@ class GoldenRectanglePositioner {
   }
 
   //Return a single position
-  getPosition() {
+  getPosition() : Position {
     return this.currentPosition;
   }
 
-  getPreviousPosition() {
+  getPreviousPosition() : Position{
     return this.previousPosition;
   }
 
-  getStartCorner() {
+  getStartCorner() : Position {
     return this.previousPositionStartCorner;
   }
 
-  //Return multiple positions
-  get Positions() {
-
-  }
-
-
-  getMyPhi(){
+  getMyPhi() : number{
     return this.myPhi;
   }
 
 }
 
-
-export default GoldenRectanglePositioner;
