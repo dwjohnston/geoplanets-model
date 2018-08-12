@@ -1,14 +1,14 @@
-import Parameter from "../Parameter";
+import {Parameter} from "../Parameter";
 
-import Planet from "../algoComponents/Planet";
-import LfoPlanet from "../algoComponents/LfoPlanet";
-import Linker from "../algoComponents/Linker";
+import {PlanetParameter} from "../algoComponents/Planet";
+//import LfoPlanet from "../algoComponents/LfoPlanet";
+import {Linker} from "../algoComponents/Linker";
 
-import {Color, Position, ClearAll} from 'blacksheep-react-canvas';
+import {Color, Position, ClearAll} from 'blacksheep-geometry';
 
-import AlgorithmInterface from "./AlgorithmInterface";
+import {AlgorithmInterface} from "./AlgorithmInterface";
 
-import BaseAlgorithm from "./BaseAlgorithm";
+import {BaseAlgorithm} from "./BaseAlgorithm";
 
 /***
 
