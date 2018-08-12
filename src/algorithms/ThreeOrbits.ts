@@ -1,10 +1,10 @@
 import { PlanetParameter } from "../algoComponents/Planet";
-import Linker from "../algoComponents/Linker";
+import {Linker} from "../algoComponents/Linker";
 
 import {
   Color,
   Position
-} from 'blacksheep-geometry';
+} from '../../../blacksheep-geometry/lib';
 import {
   BaseAlgorithm
 } from "./BaseAlgorithm";

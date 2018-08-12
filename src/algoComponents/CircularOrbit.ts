@@ -3,7 +3,7 @@ import {
 } from "../AbstractParameter";
 import {
     Position
-} from "blacksheep-geometry";
+} from "../../../blacksheep-geometry/lib";
 import {
     Parameter
 } from "../Parameter";

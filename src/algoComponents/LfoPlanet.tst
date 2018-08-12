@@ -1,5 +1,5 @@
-import Parameter from '../Parameter';
-import Planet from './Planet';
+import {Parameter} from '../Parameter';
+import {Planet} from './Planet';
 
 
 import {Circle, Position, Color, Line} from 'blacksheep-react-canvas';

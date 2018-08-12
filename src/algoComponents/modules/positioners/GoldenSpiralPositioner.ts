@@ -1,5 +1,5 @@
 
-import {pointOnCircle, Position} from "blacksheep-geometry"; 
+import {pointOnCircle, Position} from "../../../../../blacksheep-geometry/lib"; 
 import { GoldenRectanglePositioner } from './GoldenRectanglePositioner';
 
 

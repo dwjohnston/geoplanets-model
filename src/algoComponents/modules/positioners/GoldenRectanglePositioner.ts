@@ -1,7 +1,7 @@
 
 import {StagePhaser} from "../phasers/StagePhaser";
 import MathJs from 'mathjs';
-import {Position} from "blacksheep-geometry";
+import {Position} from "../../../../../blacksheep-geometry/lib";
 import { Parameter } from "../../../Parameter";
 
 export class GoldenRectanglePositioner {

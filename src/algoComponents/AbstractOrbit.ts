@@ -3,7 +3,7 @@ import {
 } from "../AbstractParameter";
 import {
     Position
-} from "blacksheep-geometry";
+} from "../../../blacksheep-geometry/lib";
 import {
     Parameter
 } from "../Parameter";
@@ -58,6 +58,10 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
 
     getCenter() {
         return this.center;
+    }
+
+    getDistance() {
+        return this.distance; 
     }
 
     getPositions(): Position[] {

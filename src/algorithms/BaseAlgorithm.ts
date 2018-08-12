@@ -7,7 +7,7 @@ import {
 import {
   Color,
   ClearAll
-} from 'blacksheep-geometry';
+} from '../../../blacksheep-geometry/lib';
 import {
   ColorParameter
 } from "../ColorParameter";
@@ -16,7 +16,7 @@ import {
 } from "../AbstractParameter";
 
 import {PlanetParameter} from "../algoComponents/Planet"; 
-import Linker from "../algoComponents/Linker";
+import {Linker} from "../algoComponents/Linker";
 import { DrawPackage } from "../DrawPackage";
 
 export class BaseAlgorithm extends AlgorithmInterface {
@@ -119,7 +119,7 @@ export class BaseAlgorithm extends AlgorithmInterface {
     let previews = this.planets.reduce((acc, cur) => {
       return acc.concat([cur.getPreview.bind(cur), cur.getOrbitPreview.bind(cur)]);
     }, [() => {
-      return new ClearAll(true);
+      return new ClearAll();
     }]);
 
 

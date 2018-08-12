@@ -1,23 +1,34 @@
 
 import {GradientLine, ColorPoint} from 'blacksheep-react-canvas';
+import { Position } from 'blacksheep-geometry';
+import { PlanetParameter } from './Planet';
 
-class Linker {
+export class Linker {
 
-  constructor(o1, o2, linkrate = 10) {
-    this.o1 =o1;
-    this.o2 =o2;
+  p1: PlanetParameter; 
+  p2: PlanetParameter; 
+  linkRate: number; 
+  linkCount: number; 
+  
+  constructor(
+    p1: PlanetParameter,
+    p2:  PlanetParameter,
+     linkrate = 10
+    ) {
+    this.p1 = p1;
+    this.p1 = p1;
 
 
-    this.linkrate = linkrate;
-    this.linkcount = 0;
+    this.linkRate = linkrate;
+    this.linkCount = 0;
 
   }
 
 
   getSprite() {
 
-    if (((this.linkcount++) %this.linkrate) ===0){
-      return new GradientLine(new ColorPoint(this.o1.getPosition(), this.o1.getColor()), new ColorPoint(this.o2.getPosition(),this.o2.getColor()));
+    if (((this.linkCount++) %this.linkRate) ===0){
+      return new GradientLine(new ColorPoint(this.p1.getPosition(), this.p1.getColor()), new ColorPoint(this.p1.getPosition(),this.p2.getColor()));
 
     }
 
@@ -26,4 +37,4 @@ class Linker {
   }
 }
 
-export default Linker;
+

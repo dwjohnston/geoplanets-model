@@ -18,8 +18,8 @@ Parameter objects shouldn't have to worry about how they're being glued to the t
 
 */
 class ThreePlanets extends BaseAlgorithm {
-  constructor(onChangeCallback) {
-    super(onChangeCallback);
+  constructor() {
+    super("three-planets");
 
     //min, max, step, init, label, lfoRange, lfoMinFreq, lfoMaxFreq, lfoFreqInit, lfoAmountInit phase=0
 
