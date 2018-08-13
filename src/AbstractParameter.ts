@@ -42,6 +42,8 @@ export class AbstractParameter < T > {
 
     tick() {
         this.tickables.forEach((p: AbstractParameter < any > ) => p.tick());
+
+
     }
 
     toJson(): AbstractParameterJson {

@@ -44,6 +44,8 @@ export class BaseAlgorithm extends AlgorithmInterface {
   randomParams: AbstractParameter < any > []; // Parameters which - if randomize() is called - should be randomized 
 
 
+
+
   drawPackage: DrawPackage; 
   drawFunctionMap :DrawFunctionMap;
   constructor(
@@ -132,8 +134,8 @@ export class BaseAlgorithm extends AlgorithmInterface {
     }]);
 
     this.drawFunctionMap = {
-      0: paints,
-      1: previews,
+      0: previews,
+      1: paints,
     }
   }
 
@@ -145,16 +147,16 @@ export class BaseAlgorithm extends AlgorithmInterface {
   tick() : DrawPackage {
     let draws : DrawPackage = {};
 
-    for (const key of Object.keys(this.drawPackage)) {
+    for (const key of Object.keys(this.drawFunctionMap)) {
       draws[key] = [];
     }
     for (let i = 0; i < this.globalSpeed.getValue(); i++) {
 
       this.tickables.forEach((t: AbstractParameter<any>) => t.tick());
 
-      for (const key of Object.keys(this.drawPackage)) {
+      for (let key of Object.keys(this.drawFunctionMap)) {
 
-        for (let fn of this.drawPackage[key]) {
+        for (let fn of this.drawFunctionMap[key]) {
           draws[key] = draws[key].concat(fn());
         }
 
@@ -165,6 +167,7 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
     }
 
+    console.log(draws); 
     return draws;
 
   }

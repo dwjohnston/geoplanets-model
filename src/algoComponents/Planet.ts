@@ -4,7 +4,7 @@ import {SinePhaser} from "./modules/phasers/SinePhaser";
 import { ColorParameter } from '../ColorParameter';
 import { CircularOrbit } from './CircularOrbit';
 import { AbstractParameter } from '../AbstractParameter';
-import { DrawableObject } from 'blacksheep-geometry/lib/drawableObjects/DrawableObject';
+import { DrawableObject } from 'blacksheep-geometry';
 
 export interface Planet {
 	colors: Color[]; 
@@ -24,7 +24,7 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 		baseSpeed : Parameter = new Parameter(1, 1, 1, 1, "base-speed"),
 		speed: Parameter = new Parameter(-24, 24, 1, 1, "speed"), 
 		distance : Parameter = new Parameter(0.01, .5, 0.01, 0.3, "distance"), 
-		color : ColorParameter = new ColorParameter("color", new Color(0,0,0,1)),
+		color : ColorParameter = new ColorParameter("color", new Color(200,1,0,1)),
 		center : Position = new Position(0, 0),
 		// phase =0 
 	) {
@@ -78,6 +78,10 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 		return this.color.getValue();
 	}
 
+	setCenter(p: Position) {
+		this.orbit.setCenter(p); 
+	}
+
 	getPaint() : DrawableObject {
 		//return new Circle(this.radius, this.color, this.position);
 
@@ -90,7 +94,7 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 	}
 
 	getPreview() : DrawableObject {
-		return new Circle(this.orbit.getDistance().getValue(), this.color.getValue().shift(50,0.5), this.getPosition(), false, 2);
+		return new Circle(0.02, this.color.getValue().shift(50,0.5), this.getPosition(), false, 2);
 	}
 
 	getOrbitPreview() : DrawableObject {

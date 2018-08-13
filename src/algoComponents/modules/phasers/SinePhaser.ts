@@ -50,11 +50,14 @@ export class SinePhaser extends AbstractParameter < number > {
   }
 
   reset() {
+
+    console.log("reset");
     this.basePhaser.reset();
     this.calcValue();
   }
 
   calcValue() {
+   
     this.value = Math.sin(this.basePhaser.getPhase()) * this.distance.getValue();
   }
 

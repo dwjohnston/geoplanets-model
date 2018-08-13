@@ -8,6 +8,7 @@ import {
 import {
   BaseAlgorithm
 } from "./BaseAlgorithm";
+import { DrawPackage } from "../DrawPackage";
 
 /***
 
@@ -38,11 +39,15 @@ export class ThreeOrbits extends BaseAlgorithm {
     this.p1 = new PlanetParameter(
 
     );
+    this.p1.setCenter(center); 
     this.p2 = new PlanetParameter(
 
     );
+
+    this.p2.setCenter(this.p1.getPosition()); 
     this.p3 = new PlanetParameter(
     );
+    this.p3.setCenter(this.p2.getPosition()); 
 
     this.planets = [this.p1, this.p2, this.p3];
 
@@ -65,6 +70,13 @@ export class ThreeOrbits extends BaseAlgorithm {
     //ie. render orbit preview, planet preview, planet paint, all linkers.
     super.initPaintClearFunction();
     super.initDrawFunctions();
+
+  }
+
+
+  tick() : DrawPackage{
+    let re =     super.tick(); 
+    return re; 
 
   }
 

@@ -68,6 +68,10 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
         return this.speed; 
     }
 
+    setCenter(p : Position) {
+        this.center =p; 
+    }
+
     getPositions(): Position[] {
         return this.positionsList;
     }
@@ -78,6 +82,10 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
 
     calcPositions(): Position[] {
         throw "Calc positions not implmented";
+    }
+
+    tick() {
+        this.calcPositions(); 
     }
 
     initPositions() {

@@ -54,6 +54,12 @@ export class CircularOrbit extends AbstractOrbit {
     }
 
 
+    tick() {
+        this.xPhaser.tick();
+        this.yPhaser.tick(); 
+        super.tick();
+    }
+
     calcPositions(){
 
 		let x, y;
@@ -73,6 +79,7 @@ export class CircularOrbit extends AbstractOrbit {
                 y + this.yPhaser.getValue(),
             );
         }
+
 		return this.positionsList;
 	}
 
