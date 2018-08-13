@@ -7,7 +7,7 @@ import {
 import {
   Color,
   ClearAll
-} from '../../../blacksheep-geometry/lib';
+} from 'blacksheep-geometry';
 import {
   ColorParameter
 } from "../ColorParameter";
@@ -15,9 +15,19 @@ import {
   AbstractParameter
 } from "../AbstractParameter";
 
-import {PlanetParameter} from "../algoComponents/Planet"; 
+import {PlanetParameter, Planet} from "../algoComponents/Planet"; 
 import {Linker} from "../algoComponents/Linker";
 import { DrawPackage } from "../DrawPackage";
+import { DrawableObject } from "blacksheep-geometry";
+
+
+export interface DrawFunction {
+  () : DrawableObject; 
+}
+
+export interface DrawFunctionMap {
+  [key : number] : DrawFunction[]; 
+}
 
 export class BaseAlgorithm extends AlgorithmInterface {
 
@@ -35,6 +45,7 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
 
   drawPackage: DrawPackage; 
+  drawFunctionMap :DrawFunctionMap;
   constructor(
     label : string, 
     globalSpeed: Parameter = new Parameter(1, 50, 1, 1, "super-speed"),
@@ -59,6 +70,13 @@ export class BaseAlgorithm extends AlgorithmInterface {
     this.drawPackage  = {
 
     }; 
+
+
+    this.drawFunctionMap  = {
+      0: [],
+      1: []
+
+    }
 
     /**
     Structure should look like this:
@@ -98,33 +116,22 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
   It's the basic rendering for all planets and linkers.
   ***/
-  initRenderMap() {
+  initDrawFunctions() {
 
-    let paints = this.planets.reduce((acc, cur) => {
+    let paints = this.planets.reduce((acc : DrawFunction[], cur : PlanetParameter) => {
         return acc.concat([cur.getPaint.bind(cur)]);
-      }, [() => {
-
-        //I don't like this, but works for now.
-        // if (this.requiresClear) {
-
-        //   this.requiresClear = false;
-        //   return new ClearAll(this.baseColor);
-
-        // }
-      }])
-      .concat(this.linkers.reduce((acc, cur) => {
+      }, [])
+      .concat(this.linkers.reduce((acc : DrawFunction[], cur : Linker) => {
         return acc.concat([cur.getSprite.bind(cur)]);
       }, []));
 
-    let previews = this.planets.reduce((acc, cur) => {
+    let previews = this.planets.reduce((acc : DrawFunction[], cur : PlanetParameter) => {
       return acc.concat([cur.getPreview.bind(cur), cur.getOrbitPreview.bind(cur)]);
     }, [() => {
       return new ClearAll();
     }]);
 
-
-
-    this.drawPackage = {
+    this.drawFunctionMap = {
       0: paints,
       1: previews,
     }

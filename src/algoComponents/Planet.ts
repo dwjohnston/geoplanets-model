@@ -54,6 +54,14 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 
 
 
+	getParams() {
+		return [
+			this.orbit.getDistance(),
+			this.orbit.getSpeed(), 
+			this.color
+		]
+	}
+
 
 	getCenter() : Position {
 		return this.orbit.getCenter();

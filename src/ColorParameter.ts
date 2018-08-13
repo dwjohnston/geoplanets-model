@@ -1,5 +1,5 @@
 import {AbstractParameter} from "./AbstractParameter"; 
-import {Color} from "../../blacksheep-geometry/lib"; 
+import {Color} from "blacksheep-geometry"; 
 import { AbstractParameterJson } from "./AbstractParameter";
 
 export class ColorParameter extends AbstractParameter<Color>{

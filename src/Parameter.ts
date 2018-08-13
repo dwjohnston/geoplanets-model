@@ -1,4 +1,4 @@
-import {randomStep} from '../../davids-toolbox/lib'; 
+import {randomStep} from 'davids-toolbox'; 
 
 import {AbstractParameter} from "./AbstractParameter"; 
 

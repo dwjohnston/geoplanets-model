@@ -1,6 +1,6 @@
 
 import {GradientLine, ColorPoint} from 'blacksheep-react-canvas';
-import { Position } from 'blacksheep-geometry';
+import { Position, DrawableObject } from '../../../blacksheep-geometry/lib';
 import { PlanetParameter } from './Planet';
 
 export class Linker {
@@ -25,15 +25,21 @@ export class Linker {
   }
 
 
-  getSprite() {
+  getSprite() : DrawableObject {
 
     if (((this.linkCount++) %this.linkRate) ===0){
-      return new GradientLine(new ColorPoint(this.p1.getPosition(), this.p1.getColor()), new ColorPoint(this.p1.getPosition(),this.p2.getColor()));
-
+      return new GradientLine(
+        new ColorPoint(
+          this.p1.getPosition(), 
+          this.p1.getColor()
+        ),
+        new ColorPoint(
+          this.p1.getPosition(),
+          this.p2.getColor()
+        )
+      );
     }
-
     return;
-
   }
 }
 

@@ -64,6 +64,10 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
         return this.distance; 
     }
 
+    getSpeed() {
+        return this.speed; 
+    }
+
     getPositions(): Position[] {
         return this.positionsList;
     }
@@ -77,6 +81,10 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
     }
 
     initPositions() {
+
+
+        this.positionsList = []; 
+        this.previousPositionsList = []; 
         for (let i = 0; i < this.nPositions.getValue(); i++) {
             this.positionsList[i] = this.center.copy();
             this.previousPositionsList[i] = this.center.copy();
