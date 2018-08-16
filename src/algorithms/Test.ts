@@ -1,38 +1,20 @@
 
-import { AbstractParameterJson, AbstractParameter } from '../AbstractParameter';
-import { SimpleParameter } from '../SimpleParameter';
-import { ColorParameter } from '../ColorParameter';
-import { Color, DrawableObject, GradientLine, ColorPoint, ClearAll } from 'blacksheep-geometry';
-import { Position } from 'blacksheep-geometry';
-import { circularOrbit } from '../algoComponents/CircularOrbit';
-import { Circle } from 'blacksheep-geometry';
+import { AbstractParameterJson, AbstractParameter } from '../parameters/AbstractParameter';
+import { SimpleParameter } from '../parameters/SimpleParameter';
+import { ColorParameter } from '../parameters/ColorParameter';
+import { Color, DrawableObject, GradientLine, ColorPoint, ClearAll } from '../../../blacksheep-geometry/lib';
+import { Position } from '../../../blacksheep-geometry/lib';
+import { circularOrbit, regularPolygonOrbit } from '../algoComponents/orbits';
+import { Circle } from '../../../blacksheep-geometry/lib';
 import { AbstractAlgorithm } from './AbstractAlgorithm';
+import { makeOrbitPreview } from '../algoComponents/renderers/orbits';
+import { makePlanetPreview } from '../algoComponents/renderers/tracers';
+import { makeLink } from '../algoComponents/renderers/links';
 
 
 
-export function makePlanetPreview(position: Position, color: Color): DrawableObject {
 
-    return new Circle(0.02, color.shift(50, 0.5), position, false, 2);
 
-}
-
-export function makeOrbitPreview(center: Position, distance: number): DrawableObject {
-    return new Circle(distance, new Color(255, 255, 255, 0.2), center, false);
-
-}
-
-export function makeLink(p1: Position, c1: Color, p2: Position, c2: Color): DrawableObject {
-    return new GradientLine(
-        new ColorPoint(
-            p1,
-            c1
-        ),
-        new ColorPoint(
-            p2,
-            c2
-        )
-    );
-}
 
 
 export class Test extends AbstractAlgorithm {
@@ -99,9 +81,12 @@ export class Test extends AbstractAlgorithm {
             };
         }
         else {
-            let tAdjust = this.t /1000; 
-            let positionA = circularOrbit(tAdjust, 0, this.center, this.speed.getValue(), this.distance.getValue());
-            let positionB = circularOrbit(tAdjust, Math.PI * 0.5, this.center, this.speed.getValue() * 2, this.distance.getValue() * 0.5);
+            let tAdjust = this.t; 
+            let speedAdjust = this.speed.getValue() / 1000; 
+
+            let positionA = circularOrbit(tAdjust, 0, this.center, speedAdjust, this.distance.getValue());
+            //let positionB = circularOrbit(tAdjust, 2, this.center, speedAdjust, this.distance.getValue());
+            let positionB = regularPolygonOrbit(tAdjust, Math.PI * 0.5, this.center, speedAdjust, this.distance.getValue() * 0.5, 3, 0);
     
             return {
                 1: [

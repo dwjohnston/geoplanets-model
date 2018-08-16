@@ -1,11 +1,11 @@
 
-import { AbstractParameterJson, AbstractParameter } from '../AbstractParameter';
-import { SimpleParameter } from '../SimpleParameter';
-import { ColorParameter } from '../ColorParameter';
-import { Color, DrawableObject, GradientLine, ColorPoint } from 'blacksheep-geometry';
-import { Position } from 'blacksheep-geometry';
-import { circularOrbit } from '../algoComponents/CircularOrbit';
-import { Circle } from 'blacksheep-geometry';
+import { AbstractParameterJson, AbstractParameter } from '../parameters/AbstractParameter';
+import { SimpleParameter } from '../parameters/SimpleParameter';
+import { ColorParameter } from '../parameters/ColorParameter';
+import { Color, DrawableObject, GradientLine, ColorPoint } from '../../../blacksheep-geometry/lib';
+import { Position } from '../../../blacksheep-geometry/lib';
+import { circularOrbit } from '../algoComponents/orbits';
+import { Circle } from '../../../blacksheep-geometry/lib';
 
 
 

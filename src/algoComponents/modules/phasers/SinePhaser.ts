@@ -1,19 +1,19 @@
 import {
   SimpleParameter
-} from "../../../SimpleParameter";
+} from "../../../parameters/SimpleParameter";
 import {
   basePhase, 
   BasePhaser
 } from "./BasePhaser";
 import {
   AbstractParameter
-} from "../../../AbstractParameter";
+} from "../../../parameters/AbstractParameter";
 
 
 
 
 export function sinePhase(time: number, speed: number, initPhase: number, amplitude: number) : number{
-  return Math.sin((initPhase + time) * speed) * amplitude;
+  return Math.sin(initPhase + time * speed) * amplitude;
 }
 /***
 

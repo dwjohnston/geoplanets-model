@@ -1,4 +1,4 @@
-import {SimpleParameter} from "../../../SimpleParameter";
+import {SimpleParameter} from "../../../parameters/SimpleParameter";
 
 /***
 
