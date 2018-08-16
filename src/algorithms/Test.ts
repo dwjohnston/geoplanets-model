@@ -10,6 +10,7 @@ import { AbstractAlgorithm } from './AbstractAlgorithm';
 import { makeOrbitPreview } from '../algoComponents/renderers/orbits';
 import { makePlanetPreview } from '../algoComponents/renderers/tracers';
 import { makeLink } from '../algoComponents/renderers/links';
+import { DrawPackage } from '../DrawPackage';
 
 
 
@@ -57,7 +58,7 @@ export class Test extends AbstractAlgorithm {
             "global" :  {
                 type: "icon", 
                 icon: "cog", 
-                params: []
+                params: [this.baseColor]
             }, 
 
             "p1" : {
@@ -69,18 +70,7 @@ export class Test extends AbstractAlgorithm {
     }
 
 
-    tick() {
-        this.t++;
-
-
-        if (this.requiresClear) {
-            this.requiresClear = false; 
-            return {
-                0: [new ClearAll()], 
-                1: [new ClearAll()]
-            };
-        }
-        else {
+    subTick() : DrawPackage {
             let tAdjust = this.t; 
             let speedAdjust = this.speed.getValue() / 1000; 
 
@@ -98,7 +88,7 @@ export class Test extends AbstractAlgorithm {
                 0: [makeLink(positionA, this.color.getValue(), positionB, this.color.getValue())]
             }
     
-        }
+        
 
     }
 

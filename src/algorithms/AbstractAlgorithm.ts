@@ -1,37 +1,6 @@
-
-import { AbstractParameterJson, AbstractParameter } from '../parameters/AbstractParameter';
-import { SimpleParameter } from '../parameters/SimpleParameter';
-import { ColorParameter } from '../parameters/ColorParameter';
-import { Color, DrawableObject, GradientLine, ColorPoint } from '../../../blacksheep-geometry/lib';
-import { Position } from '../../../blacksheep-geometry/lib';
-import { circularOrbit } from '../algoComponents/orbits';
-import { Circle } from '../../../blacksheep-geometry/lib';
-
-
-
-export function makePlanetPreview(position: Position, color: Color): DrawableObject {
-
-    return new Circle(0.02, color.shift(50, 0.5), position, false, 2);
-
-}
-
-export function makeOrbitPreview(center: Position, distance: number): DrawableObject {
-    return new Circle(distance, new Color(255, 255, 255, 0.2), center, false);
-
-}
-
-export function makeLink(p1: Position, c1: Color, p2: Position, c2: Color): DrawableObject {
-    return new GradientLine(
-        new ColorPoint(
-            p1,
-            c1
-        ),
-        new ColorPoint(
-            p2,
-            c2
-        )
-    );
-}
+import { AbstractParameter } from '../parameters/AbstractParameter';
+import {  ClearAll } from "blacksheep-geometry";
+import { DrawPackage } from '../DrawPackage';
 
 
 export class AbstractAlgorithm {
@@ -53,8 +22,27 @@ export class AbstractAlgorithm {
     }
 
 
-    tick() {
-        throw ("tick() not implmented."); 
+    tick() : DrawPackage{
+        this.t++;
+
+
+        if (this.requiresClear) {
+
+            console.log("requires clear"); 
+
+            this.requiresClear = false; 
+            return {
+                0: [new ClearAll()], 
+                1: [new ClearAll()]
+            };
+        }
+        else {
+            return this.subTick(); 
+        }    
+    }
+
+    subTick() : DrawPackage {
+        throw "subtick not implmented"; 
     }
 
     getParams() {
@@ -73,6 +61,11 @@ export class AbstractAlgorithm {
                 this.requiresClear = true; 
             })
         }); 
+    }
+
+
+    requestClear() {
+        this.requiresClear = true; 
     }
 
 

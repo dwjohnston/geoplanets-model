@@ -1,5 +1,5 @@
-import {Circle, DrawableObject, Color, Position}
- from 'blacksheep-geometry';
+import {Circle, DrawableObject, Color, Position, AbstractPolygon, Polygon}
+from 'blacksheep-geometry';
 
 
 export function makeOrbitPreview(center: Position, distance: number): DrawableObject {
@@ -7,3 +7,6 @@ export function makeOrbitPreview(center: Position, distance: number): DrawableOb
 
 }		
 
+export function makeRegularPolygonOrbit(poly: AbstractPolygon) : DrawableObject {
+    return new Polygon(poly,new Color(255, 255, 255, 0.2), false, 1); 
+}

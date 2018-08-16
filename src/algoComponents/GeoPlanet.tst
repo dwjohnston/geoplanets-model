@@ -58,26 +58,6 @@ class GeoPlanet extends Planet{
 
 
 
-		//hack because of super calling this calcPosition
-		if (this.nSides !== undefined) {
-			let nSides = this.nSides.getValue();
-			this.previousPosition.update(this.position.x, this.position.y);
-			// let poly = new Polygon(this.distance.getValue(), this.color, this.center, nSides, this.rotatePhase, false);
-
-			let poly = this.getCurrentOrbit();
-
-			let position = poly.getPoint(this.planetPhaser.getPhase());
-
-			this.position.update(
-				position.x, position.y
-			);
-
-			return this.position;
-		}
-
-		else {
-			super.calcPosition();
-		}
 
 
 	}

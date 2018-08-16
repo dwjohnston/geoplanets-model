@@ -14,3 +14,8 @@ export function makeLink(p1: Position, c1: Color, p2: Position, c2: Color): Draw
         )
     );
 }
+
+
+export function makeLink2 (cp1: ColorPoint, cp2: ColorPoint) {
+    return new GradientLine(cp1, cp2); 
+}
