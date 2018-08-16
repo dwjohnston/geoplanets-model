@@ -5,14 +5,14 @@ import {
     Position
 } from "../../../blacksheep-geometry/lib";
 import {
-    Parameter
-} from "../Parameter";
+    SimpleParameter
+} from "../SimpleParameter";
 
 export class AbstractOrbit extends AbstractParameter < Position[] > {
 
 
-    speed: Parameter;
-    distance: Parameter;
+    speed: SimpleParameter;
+    distance: SimpleParameter;
 
     center: Position;
 
@@ -21,15 +21,15 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
 
     positionsList: Position[];
     previousPositionsList: Position[];
-    nPositions: Parameter;
+    nPositions: SimpleParameter;
 
     constructor(
         label: string,
-        speed: Parameter,
-        distance: Parameter,
+        speed: SimpleParameter,
+        distance: SimpleParameter,
         center: Position,
         initPhase: number,
-        nPositions: Parameter,
+        nPositions: SimpleParameter,
     ) {
 
         super(label);
@@ -48,7 +48,7 @@ export class AbstractOrbit extends AbstractParameter < Position[] > {
 
 
         this.initPositions();
-        this.initialiseClearEventSubscriptions();
+       // this.initialiseClearEventSubscriptions();
     }
 
 

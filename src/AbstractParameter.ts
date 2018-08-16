@@ -1,6 +1,6 @@
 import {
     Observable,
-    Observer
+    Observer, Subject
 } from "rxjs";
 
 export interface AbstractParameterJson {
@@ -10,41 +10,26 @@ export interface AbstractParameterJson {
 export class AbstractParameter < T > {
 
     label: string;
-    value: any;
+    value: T;
 
-    observable: Observable < T > ;
+    observable: Subject < T > ;
     observer: Observer < T > ;
-
-
-    tickables: AbstractParameter < any > []; // Parameters which - if algorithm ticks, these params should tick. 
-    resetParams: AbstractParameter < any > []; // Parameters which - if algorithm resets, these params should reset
-    clearParams: AbstractParameter < any > []; // Parameters which - if they've changed, should clear the whole thing
-    randomParams: AbstractParameter < any > []; // Parameters which - if randomize() is called - should be randomized 
-
 
     constructor(label: string) {
 
         this.label = label;
-
-        this.observable = Observable.create((observer: Observer < T > ) => {
-            this.observer = observer;
-        });
+        this.observable =  new Subject();
 
     }
 
     randomize() {
-        this.randomParams.forEach((p: AbstractParameter < any > ) => p.randomize());
+        throw "Randomize not implemented"; 
     }
 
     reset() {
-        this.resetParams.forEach((p: AbstractParameter < any > ) => p.reset());
+        throw "reset not implemented"; 
     }
 
-    tick() {
-        this.tickables.forEach((p: AbstractParameter < any > ) => p.tick());
-
-
-    }
 
     toJson(): AbstractParameterJson {
         const obj: AbstractParameterJson = {};
@@ -58,7 +43,7 @@ export class AbstractParameter < T > {
 
     updateValue(value: T) {
         this.value = value;
-        this.observer.next(value);
+        this.observable.next(value);
     }
 
     getValue() : T {
@@ -67,16 +52,6 @@ export class AbstractParameter < T > {
 
     getObservable(): Observable < T > {
         return this.observable;
-    }
-
-    initialiseClearEventSubscriptions() {
-        this.clearParams.forEach((p: AbstractParameter<any>) => {
-            p.getObservable().subscribe((v: T) => {
-                //We emit the current value to let the eventual parent know that a clear is required.
-                //This will onlywork if the parent has this parameter as a clear param. 
-                this.observer.next(this.value); 
-            }); 
-        }); 
     }
 
 }

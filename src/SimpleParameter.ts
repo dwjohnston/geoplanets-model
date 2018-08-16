@@ -4,7 +4,7 @@ import {AbstractParameter} from "./AbstractParameter";
 
 
 
-export class Parameter extends AbstractParameter<number> {
+export class SimpleParameter extends AbstractParameter<number> {
 
 
   min: number; 

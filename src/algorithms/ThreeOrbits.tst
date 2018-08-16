@@ -9,11 +9,12 @@ import {
   BaseAlgorithm
 } from "./BaseAlgorithm";
 import { DrawPackage } from "../DrawPackage";
+import { AbstractParameter } from "../AbstractParameter";
 
 /***
 
 */
-export class ThreeOrbits extends BaseAlgorithm {
+export class ThreeOrbits  {
 
 
   center: Position;
@@ -28,7 +29,7 @@ export class ThreeOrbits extends BaseAlgorithm {
   constructor() {
 
     //BaseAlgorithm basically sets up some standard reusable functionality, that can be overridden if you wish.
-    super("three-orbits");
+    //super("three-orbits");
 
 
     //Define a center point
@@ -60,6 +61,8 @@ export class ThreeOrbits extends BaseAlgorithm {
       new Linker(this.p1, this.p3, 3),
     ];
 
+    this.clearParams = this.planets; 
+
 
     //Tell it all the planets need to tick
     this.tickables = this.tickables.concat(this.planets);
@@ -68,10 +71,15 @@ export class ThreeOrbits extends BaseAlgorithm {
     //Use default BaseAlgorithm clearing and rendering
     //ie. clear whenever a control changes
     //ie. render orbit preview, planet preview, planet paint, all linkers.
-    super.initPaintClearFunction();
+    this.initialiseClearEventSubscriptions();
     super.initDrawFunctions();
 
   }
+
+
+
+
+}
 
 
   tick() : DrawPackage{

@@ -1,13 +1,20 @@
 import {
-  Parameter
-} from "../../../Parameter";
+  SimpleParameter
+} from "../../../SimpleParameter";
 import {
+  basePhase, 
   BasePhaser
 } from "./BasePhaser";
 import {
   AbstractParameter
 } from "../../../AbstractParameter";
 
+
+
+
+export function sinePhase(time: number, speed: number, initPhase: number, amplitude: number) : number{
+  return Math.sin((initPhase + time) * speed) * amplitude;
+}
 /***
 
  Sine Phaser
@@ -20,9 +27,9 @@ import {
 
 */
 export class SinePhaser extends AbstractParameter < number > {
-  distance: Parameter;
-  speed: Parameter;
-  baseSpeed: Parameter;
+  distance: SimpleParameter;
+  speed: SimpleParameter;
+  baseSpeed: SimpleParameter;
   basePhaser: BasePhaser;
 
   initPhase: number;
@@ -30,9 +37,9 @@ export class SinePhaser extends AbstractParameter < number > {
   value: number;
 
   constructor(
-    speedParam: Parameter,
-    baseSpeed = new Parameter(1, 25, 1, 6, "base-speed"),
-    distance = new Parameter(0, 1, 0.001, 1, "distance"),
+    speedParam: SimpleParameter,
+    baseSpeed = new SimpleParameter(1, 25, 1, 6, "base-speed"),
+    distance = new SimpleParameter(0, 1, 0.001, 1, "distance"),
     initPhase = 0) {
 
     super("");

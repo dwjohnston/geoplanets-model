@@ -1,4 +1,4 @@
-import {Parameter} from '../Parameter';
+import {SimpleParameter} from '../SimpleParameter';
 import {Circle, Position, Color, Line} from "blacksheep-geometry";
 import {SinePhaser} from "./modules/phasers/SinePhaser";
 import { ColorParameter } from '../ColorParameter';
@@ -11,6 +11,8 @@ export interface Planet {
 	positions: Position[]; 
 }
 
+
+
 export class PlanetParameter extends AbstractParameter<Planet>  {
 
 	orbit: CircularOrbit; 
@@ -21,9 +23,9 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 
 	constructor(
 		label  = "nolabel",
-		baseSpeed : Parameter = new Parameter(1, 1, 1, 1, "base-speed"),
-		speed: Parameter = new Parameter(-24, 24, 1, 1, "speed"), 
-		distance : Parameter = new Parameter(0.01, .5, 0.01, 0.3, "distance"), 
+		baseSpeed : SimpleParameter = new SimpleParameter(1, 1, 1, 1, "base-speed"),
+		speed: SimpleParameter = new SimpleParameter(-24, 24, 1, 1, "speed"), 
+		distance : SimpleParameter = new SimpleParameter(0.01, .5, 0.01, 0.3, "distance"), 
 		color : ColorParameter = new ColorParameter("color", new Color(200,1,0,1)),
 		center : Position = new Position(0, 0),
 		// phase =0 
@@ -38,7 +40,7 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 			distance, 
 			center, 
 			0, 
-			new Parameter(1, 1, 1, 1, "nPlanets")
+			new SimpleParameter(1, 1, 1, 1, "nPlanets")
 		); 
 		this.color = color; 
 
@@ -48,8 +50,8 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 		this.clearParams = [this.orbit, this.color]; 
 		this.randomParams = [this.orbit, this.color]; 
 
+		//this.initialiseClearEventSubscriptions();
 
-		this.initialiseClearEventSubscriptions();
 	}
 
 
@@ -100,6 +102,7 @@ export class PlanetParameter extends AbstractParameter<Planet>  {
 	getOrbitPreview() : DrawableObject {
 		return new Circle(this.orbit.getDistance().getValue(), new Color(255,255,255,0.2), this.getCenter(), false);
 	}
+
 
 }
 

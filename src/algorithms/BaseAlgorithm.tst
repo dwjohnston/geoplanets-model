@@ -1,8 +1,7 @@
-import {AlgorithmInterface} from "./AlgorithmInterface";
 
 import {
-  Parameter
-} from "../Parameter";
+  SimpleParameter
+} from "../SimpleParameter";
 
 import {
   Color,
@@ -31,8 +30,8 @@ export interface DrawFunctionMap {
 
 export class BaseAlgorithm extends AlgorithmInterface {
 
-  globalSpeed: Parameter;
-  baseSpeed: Parameter;
+  globalSpeed: SimpleParameter;
+  baseSpeed: SimpleParameter;
   baseColor: ColorParameter;
 
   planets: PlanetParameter[];
@@ -45,13 +44,16 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
 
 
+  requiresClear  = false; 
+
+
 
   drawPackage: DrawPackage; 
   drawFunctionMap :DrawFunctionMap;
   constructor(
     label : string, 
-    globalSpeed: Parameter = new Parameter(1, 50, 1, 1, "super-speed"),
-    baseSpeed: Parameter = new Parameter(1, 8, 1, 6, "base-speed"),
+    globalSpeed: SimpleParameter = new SimpleParameter(1, 50, 1, 1, "super-speed"),
+    baseSpeed: SimpleParameter = new SimpleParameter(1, 8, 1, 6, "base-speed"),
     baseColor: ColorParameter = new ColorParameter("bg-color", new Color(0, 0, 0, 1))
   ) {
 
@@ -70,7 +72,8 @@ export class BaseAlgorithm extends AlgorithmInterface {
     this.randomParams = []; 
 
     this.drawPackage  = {
-
+      0: [], 
+      1: []
     }; 
 
 
@@ -93,7 +96,12 @@ export class BaseAlgorithm extends AlgorithmInterface {
     */
 
   }
-
+  getClear() {
+    if (this.requiresClear) {
+      this.requiresClear = false; 
+      return new ClearAll();
+    }
+  }
 
   toJson() {
 
@@ -108,8 +116,16 @@ export class BaseAlgorithm extends AlgorithmInterface {
   }
 
   initPaintClearFunction() {
-    this.clearParams = [].concat(this.planets).concat([this.baseColor, this.baseSpeed]);
+   
 
+
+
+    this.clearParams.forEach((p : AbstractParameter<any>) => {
+      p.getObservable().subscribe(v => {
+        console.log(v);
+        this.requiresClear = true; 
+      });
+    }); 
   }
 
   /***
@@ -122,7 +138,7 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
     let paints = this.planets.reduce((acc : DrawFunction[], cur : PlanetParameter) => {
         return acc.concat([cur.getPaint.bind(cur)]);
-      }, [])
+      }, [this.getClear.bind(this)])
       .concat(this.linkers.reduce((acc : DrawFunction[], cur : Linker) => {
         return acc.concat([cur.getSprite.bind(cur)]);
       }, []));
@@ -135,7 +151,7 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
     this.drawFunctionMap = {
       0: previews,
-      1: paints,
+      1: paints
     }
   }
 
@@ -167,7 +183,6 @@ export class BaseAlgorithm extends AlgorithmInterface {
 
     }
 
-    console.log(draws); 
     return draws;
 
   }

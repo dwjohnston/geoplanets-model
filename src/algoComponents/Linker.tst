@@ -37,7 +37,6 @@ export class Linker {
           this.p2.getColor()
         )
       );
-      console.log(line); 
       return line; 
     }
     return;
