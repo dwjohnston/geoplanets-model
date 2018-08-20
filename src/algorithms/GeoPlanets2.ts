@@ -48,12 +48,8 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
 
     this.p3.initPhase = new StaticParameter<number>("init-phase", Math.PI); 
 
-
     this.randomParams = this.params;
     this.clearParams = this.params;
-
-
-    console.log(this.clearParams); 
 
     this.initClearFunctions(); 
   }

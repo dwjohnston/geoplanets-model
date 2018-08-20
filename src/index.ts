@@ -5,5 +5,6 @@ export * from "./parameters/AbstractParameter";
 export * from "./algorithms/Test"; 
 export * from "./algorithms/GeoPlanets";
 export * from "./algorithms/GeoPlanets2"
+export * from "./algorithms/ThreeOrbits"; 
 
 //export * from "./algoComponents/Planet"; 

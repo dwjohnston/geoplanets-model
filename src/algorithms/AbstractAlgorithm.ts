@@ -1,71 +1,101 @@
 import { AbstractParameter } from '../parameters/AbstractParameter';
-import {  ClearAll } from "blacksheep-geometry";
+import { ClearAll, Color } from "blacksheep-geometry";
 import { DrawPackage } from '../DrawPackage';
+import { SimpleParameter } from '../parameters/SimpleParameter';
+import { ColorParameter } from '../parameters/ColorParameter';
+import { RenderHint } from '../RenderMap';
 
 
 export class AbstractAlgorithm {
 
 
-    t: number; 
-    label: string; 
+    t: number;
+    label: string;
     params: AbstractParameter<any>[];       // Params to be rendered 
     clearParams: AbstractParameter<any>[];  // Params that should clear the whole thing
     randomParams: AbstractParameter<any>[]; // Params that will be randomized; 
 
-    requiresClear: boolean = true; 
+
+    superSpeed: AbstractParameter<number> = new SimpleParameter(1, 100, 1, 5, "super-speed");
+    baseColor = new ColorParameter("base-color", new Color(0, 0, 0, 1));
+
+
+    requiresClear: boolean = true;
 
 
 
-    constructor(label : string) {
-        this.label = label; 
-        this.t = 0; 
+    constructor(label: string) {
+        this.label = label;
+        this.t = 0;
+
+        this.params = [this.superSpeed, this.baseColor];
     }
 
 
-    tick() : DrawPackage{
-        this.t++;
-
+    tick(): DrawPackage {
 
         if (this.requiresClear) {
 
-            console.log("requires clear"); 
+            console.log("requires clear");
 
-            this.requiresClear = false; 
+            this.requiresClear = false;
+            this.t = 0; 
             return {
-                0: [new ClearAll()], 
+                0: [new ClearAll()],
                 1: [new ClearAll()]
             };
         }
+
         else {
-            return this.subTick(); 
-        }    
+
+            let results = {
+                0: [], 
+                1: []
+            }; 
+
+            for (let i of Array(this.superSpeed.getValue())) {
+                this.t++;
+                let ret =  this.subTick();
+                results[0].push(...ret[0]); 
+                results[1].push(...ret[1]); 
+            }
+            return results; 
+        }
     }
 
-    subTick() : DrawPackage {
-        throw "subtick not implmented"; 
+    baseHint() : RenderHint {
+        return {
+            type: "icon",
+            icon: "cog",
+            params: [this.superSpeed, this.baseColor]
+          }; 
+    }
+
+    subTick(): DrawPackage {
+        throw "subtick not implmented";
     }
 
     getParams() {
-        return this.params; 
+        return this.params;
     }
 
 
     randomize() {
-        this.randomParams.forEach(( p: AbstractParameter<any>) => p.randomize()); 
+        this.randomParams.forEach((p: AbstractParameter<any>) => p.randomize());
     }
 
     initClearFunctions() {
-        this.clearParams.forEach((p :AbstractParameter<any>) => {
+        this.clearParams.forEach((p: AbstractParameter<any>) => {
 
             p.getObservable().subscribe((v: any) => {
-                this.requiresClear = true; 
+                this.requiresClear = true;
             })
-        }); 
+        });
     }
 
 
     requestClear() {
-        this.requiresClear = true; 
+        this.requiresClear = true;
     }
 
 
