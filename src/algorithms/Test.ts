@@ -55,11 +55,7 @@ export class Test extends AbstractAlgorithm {
     getRenderHint() {
 
         return {
-            "global" :  {
-                type: "icon", 
-                icon: "cog", 
-                params: [this.baseColor]
-            }, 
+            "global" : super.baseHint(),           
 
             "p1" : {
                 type: "planet",

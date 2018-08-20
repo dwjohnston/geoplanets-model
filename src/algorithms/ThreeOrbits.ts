@@ -18,16 +18,22 @@ export class ThreeOrbits extends AbstractAlgorithm {
   p2 = new CircularPlanetModel();
   p3 = new CircularPlanetModel();
 
+  linkMatrix: LinkMatrix;  
+
   baseColor = new ColorParameter("color", new Color(0,0,0,1)); 
   constructor() {
     super("three-orbits")
 
 
     this.params = [
+      this.linkRate, 
       ...this.p1.params, 
       ...this.p2.params, 
       ...this.p3.params
     ]; 
+
+    console.log(this);
+    this.linkMatrix = new LinkMatrix(this.linkRate);
 
     this.randomParams = this.params; 
     this.clearParams = this.params; 
@@ -60,7 +66,7 @@ export class ThreeOrbits extends AbstractAlgorithm {
     previews.push(...gp1.previews, ...gp2.previews, ...gp3.previews); 
     let positions = [...gp1.colorPoints, ...gp2.colorPoints, ...gp3.colorPoints];
 
-    let paints = new LinkMatrix().getLinks(
+    let paints = this.linkMatrix.getLinks(this.t,
       ...positions
     ); 
   

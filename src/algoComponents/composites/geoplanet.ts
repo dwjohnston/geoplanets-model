@@ -165,7 +165,10 @@ export function getGeoPlanetPackage(
     color: Color,
 
     initRotationPhase: number,
-    rotationSpeed: number
+    rotationSpeed: number, 
+
+    nPositions = 1, 
+    positionArc = Math.PI * 2, 
 ): GeoplanetPackage {
 
     let poly = getRegularPolygon(
@@ -175,15 +178,19 @@ export function getGeoPlanetPackage(
         nSides, 
     );
 
-    let pos = poly.getPoint(basePhase(time, speed, initPhase));
+
+    let positions = []; 
+    for (let i of Array(nPositions).keys()) {
+        positions.push(poly.getPoint(basePhase(time, speed, initPhase+ i * (positionArc/nPositions))));
+    }
 
     return {
         previews: [
             makeRegularPolygonOrbit(poly),
-            makePlanetPreview(pos, color)
+            ...positions.map(pos => makePlanetPreview(pos, color))
         ],
         colorPoints: [
-            new ColorPoint(pos, color )
+            ...positions.map(pos => new ColorPoint(pos, color ))
         ]
     }
 

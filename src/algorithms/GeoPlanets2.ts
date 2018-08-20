@@ -30,12 +30,14 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
 
   color: ColorParameter; 
   baseColor: ColorParameter = new ColorParameter("base-color", new Color(0,0,0,1)); 
-  
+  linker : LinkMatrix;   
 
   constructor() {
     super("geo-planets-2");
 
-    this.params = []; 
+    this.linker = new LinkMatrix(this.linkRate); 
+
+    this.params = [this.linkRate]; 
     this.params.push(...this.p1.params);
     this.params.push(...this.p2.params); 
     this.params.push(this.baseColor); 
@@ -58,11 +60,7 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
   getRenderHint() {
 
     return {
-      "global": {
-        type: "icon",
-        icon: "cog",
-        params: [this.baseColor]
-      },
+      "global": super.baseHint(), 
       "p1": this.p1.getRenderHint(),
       "p2": this.p2.getRenderHint(), 
     }
@@ -72,6 +70,7 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
 
 
     let gp1 = this.p1.subTick(this.t);
+
 
     this.p2.center = gp1.colorPoints[0].position; 
     this.p3.center = gp1.colorPoints[0].position; 
@@ -87,7 +86,7 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
     previews.push(...gp1.previews, ...gp2.previews, ...gp3.previews); 
     let positions = [...gp1.colorPoints, ...gp2.colorPoints, ...gp3.colorPoints];
 
-    paints = new LinkMatrix().getLinks(
+    paints = this.linker.getLinks(this.t, 
       ...positions
     ); 
   

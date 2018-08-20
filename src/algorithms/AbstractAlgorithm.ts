@@ -17,6 +17,7 @@ export class AbstractAlgorithm {
 
 
     superSpeed: AbstractParameter<number> = new SimpleParameter(1, 100, 1, 5, "super-speed");
+    linkRate : AbstractParameter<number> = new SimpleParameter(1, 20, 1, 5, "link-rate"); 
     baseColor = new ColorParameter("base-color", new Color(0, 0, 0, 1));
 
 
@@ -28,7 +29,7 @@ export class AbstractAlgorithm {
         this.label = label;
         this.t = 0;
 
-        this.params = [this.superSpeed, this.baseColor];
+        this.params = [this.superSpeed, this.baseColor, this.linkRate];
     }
 
 
@@ -67,7 +68,7 @@ export class AbstractAlgorithm {
         return {
             type: "icon",
             icon: "cog",
-            params: [this.superSpeed, this.baseColor]
+            params: [this.superSpeed, this.linkRate, this.baseColor]
           }; 
     }
 
