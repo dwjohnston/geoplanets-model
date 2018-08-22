@@ -1,8 +1,8 @@
 import { Position, Polygon, AbstractPolygon } from 'blacksheep-geometry';
 import {
 	sinePhase
-} from "./modules/phasers/SinePhaser";
-import { basePhase } from './modules/phasers/BasePhaser';
+} from "../phasers/SinePhaser";
+import { basePhase } from '../phasers/BasePhaser';
 
 
 

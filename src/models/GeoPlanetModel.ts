@@ -1,16 +1,15 @@
 
 import { DrawableObject, ColorPoint } from 'blacksheep-geometry';
 import { Position } from 'blacksheep-geometry';
-import { getRegularPolygon } from '../orbits';
+import { getRegularPolygon } from '../functions/positioners/orbits';
 import { Color } from 'blacksheep-geometry';
-import { makeRegularPolygonOrbit } from '../renderers/orbits';
-import { makePlanetPreview } from '../renderers/tracers';
-import { basePhase } from '../modules/phasers/BasePhaser';
-import { AbstractParameter } from '../../parameters/AbstractParameter';
-import { ColorParameter } from '../../parameters/ColorParameter';
-import { SimpleParameter } from '../../parameters/SimpleParameter';
-import { DrawPackage } from '../../DrawPackage';
-import { RenderHint } from '../../RenderMap';
+import { makeRegularPolygonOrbit } from '../functions/renderers/orbits';
+import { makePlanetPreview } from '../functions/renderers/tracers';
+import { basePhase } from '../functions/phasers/BasePhaser';
+import { AbstractParameter } from '../parameters/AbstractParameter';
+import { ColorParameter } from '../parameters/ColorParameter';
+import { SimpleParameter } from '../parameters/SimpleParameter';
+import { RenderHint } from '../algorithms/internal/RenderMap';
 
 export interface GeoplanetPackage {
 
@@ -78,7 +77,6 @@ export class GeoPlanetModel {
         let adjustSpeed = this.speed.getValue() / 1000;
         let adjustRotateSpeed = this.rotateSpeed.getValue() / 1000;
 
-        console.log(this.initPhase); 
         let gp = getGeoPlanetPackage(
             time,
             this.initPhase.getValue(),

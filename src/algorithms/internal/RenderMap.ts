@@ -1,6 +1,6 @@
+import { ColorParameter } from '../../parameters/ColorParameter';
+import { AbstractParameter } from '../../parameters/AbstractParameter';
 
-import { ColorParameter } from './parameters/ColorParameter';
-import { AbstractParameter } from './parameters/AbstractParameter';
 export interface RenderHint {
     type: string; 
     icon?: string; 

@@ -1,10 +1,10 @@
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
-import { CircularPlanetModel } from "../algoComponents/composites/CircularPlanetModel";
-import { RenderMap } from "../RenderMap";
+import { CircularPlanetModel } from "../models/CircularPlanetModel";
+import { RenderMap } from "./internal/RenderMap";
 import { ColorParameter } from "../parameters/ColorParameter";
 import { Color, ClearAll, DrawableObject } from "blacksheep-geometry";
-import { DrawPackage } from "../DrawPackage";
-import { LinkMatrix } from "../algoComponents/composites/LinkMatrix";
+import { DrawPackage } from "./internal/DrawPackage";
+import { LinkMatrix } from "../models/LinkMatrix";
 
 
 

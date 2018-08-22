@@ -1,14 +1,10 @@
 import { SimpleParameter } from "../parameters/SimpleParameter";
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
-import { DrawPackage } from '../DrawPackage';
-import { getGeoPlanetPackage, ParameterMap, createGeoPlanetParameters, GeoPlanetModel } from "../algoComponents/composites/geoplanet";
-import { makeLink } from "../algoComponents/renderers/links";
-import { ColorParameter } from '../parameters/ColorParameter';
-import { Position, Color, ClearAll ,DrawableObject, ColorPoint} from "blacksheep-geometry";
-import {StaticParameter} from "../parameters/StaticParameter"; 
-import {LinkMatrix} from "../algoComponents/composites/LinkMatrix"; 
-import {makePlanetDot} from "../algoComponents/renderers/tracers"; 
-import {fullClone} from "davids-toolbox"; 
+import { DrawPackage } from './internal/DrawPackage';
+import { getGeoPlanetPackage, GeoPlanetModel } from "../models/GeoPlanetModel";
+import { Color, ClearAll ,DrawableObject, ColorPoint} from "blacksheep-geometry";
+import {LinkMatrix} from "../models/LinkMatrix"; 
+
 /***
 
 Separation of concerns.

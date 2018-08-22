@@ -1,8 +1,8 @@
 import { DrawableObject, ColorPoint, Color, Position } from 'blacksheep-geometry';
-import { AbstractParameter } from '../../parameters/AbstractParameter';
-import { SimpleParameter } from '../../parameters/SimpleParameter';
-import { ColorParameter } from '../../parameters/ColorParameter';
-import { RenderHint } from '../../RenderMap';
+import { AbstractParameter } from '../parameters/AbstractParameter';
+import { SimpleParameter } from '../parameters/SimpleParameter';
+import { ColorParameter } from '../parameters/ColorParameter';
+import { RenderHint } from '../algorithms/internal/RenderMap';
 
 export interface PlanetPackage {
     previews: DrawableObject[];

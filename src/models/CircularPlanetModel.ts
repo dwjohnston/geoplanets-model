@@ -1,7 +1,7 @@
 import { AbstractPlanetModel, PlanetPackage } from "./AbstractPlanetModel";
-import { makePlanetPreview } from "../renderers/tracers";
-import { circularOrbit } from "../orbits";
-import { makeOrbitPreview } from "../renderers/orbits";
+import { makePlanetPreview } from "../functions/renderers/tracers";
+import { circularOrbit } from "../functions/positioners/orbits";
+import { makeOrbitPreview } from "../functions/renderers/orbits";
 import { ColorPoint } from "blacksheep-geometry";
 
 export class CircularPlanetModel extends AbstractPlanetModel {

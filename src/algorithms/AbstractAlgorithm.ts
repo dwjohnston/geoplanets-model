@@ -1,9 +1,9 @@
 import { AbstractParameter } from '../parameters/AbstractParameter';
 import { ClearAll, Color } from "blacksheep-geometry";
-import { DrawPackage } from '../DrawPackage';
+import { DrawPackage } from './internal/DrawPackage';
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { ColorParameter } from '../parameters/ColorParameter';
-import { RenderHint } from '../RenderMap';
+import { RenderHint } from './internal/RenderMap';
 
 
 export class AbstractAlgorithm {

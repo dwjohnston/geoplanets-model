@@ -1,16 +1,14 @@
 
-import { AbstractParameterJson, AbstractParameter } from '../parameters/AbstractParameter';
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { ColorParameter } from '../parameters/ColorParameter';
 import { Color, DrawableObject, GradientLine, ColorPoint, ClearAll } from '../../../blacksheep-geometry/lib';
 import { Position } from '../../../blacksheep-geometry/lib';
-import { circularOrbit, regularPolygonOrbit } from '../algoComponents/orbits';
-import { Circle } from '../../../blacksheep-geometry/lib';
+import { circularOrbit, regularPolygonOrbit } from '../functions/positioners/orbits';
 import { AbstractAlgorithm } from './AbstractAlgorithm';
-import { makeOrbitPreview } from '../algoComponents/renderers/orbits';
-import { makePlanetPreview } from '../algoComponents/renderers/tracers';
-import { makeLink } from '../algoComponents/renderers/links';
-import { DrawPackage } from '../DrawPackage';
+import { makeOrbitPreview } from '../functions/renderers/orbits';
+import { makePlanetPreview } from '../functions/renderers/tracers';
+import { makeLink } from '../functions/renderers/links';
+import { DrawPackage } from './internal/DrawPackage';
 
 
 
@@ -32,7 +30,7 @@ export class Test extends AbstractAlgorithm {
 
 
         super("test");
-        this.speed = new SimpleParameter(0, 100, 1, 10, "speed");
+        this.speed = new SimpleParameter(-42, 42, 1, 10, "speed");
         this.distance = new SimpleParameter(0, 0.5, 0.01, 0.25, "distance");
         this.color = new ColorParameter("color", new Color(255, 100, 50, 1));
         this.baseColor = new ColorParameter("color", new Color(100, 100, 50, 1)); 
@@ -68,7 +66,7 @@ export class Test extends AbstractAlgorithm {
 
     subTick() : DrawPackage {
             let tAdjust = this.t; 
-            let speedAdjust = this.speed.getValue() / 1000; 
+            let speedAdjust = this.speed.getValue() / 4200; 
 
             let positionA = circularOrbit(tAdjust, 0, this.center, speedAdjust, this.distance.getValue());
             //let positionB = circularOrbit(tAdjust, 2, this.center, speedAdjust, this.distance.getValue());

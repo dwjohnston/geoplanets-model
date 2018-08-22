@@ -1,5 +1,5 @@
 
-import {DrawableObject} from "../../blacksheep-geometry/lib"; 
+import {DrawableObject} from "blacksheep-geometry"; 
 
 export interface DrawPackage {
     [key :number] : DrawableObject[]; 

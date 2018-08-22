@@ -1,8 +1,8 @@
 import { SimpleParameter } from "../parameters/SimpleParameter";
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
-import { DrawPackage } from '../DrawPackage';
-import { getGeoPlanetPackage } from "../algoComponents/composites/geoplanet";
-import { makeLink, makeLink2 } from "../algoComponents/renderers/links";
+import { DrawPackage } from './internal/DrawPackage';
+import { getGeoPlanetPackage } from "../models/GeoPlanetModel";
+import { makeLink, makeLink2 } from "../functions/renderers/links";
 import { ColorParameter } from '../parameters/ColorParameter';
 import { Position, Color, ClearAll ,DrawableObject} from "blacksheep-geometry";
 
@@ -31,11 +31,11 @@ export class GeoPlanets extends AbstractAlgorithm {
     super("geo-planets");
 
 
-    this.speed = new SimpleParameter(-50, 50, 1, 10, "speed");
+    this.speed = new SimpleParameter(-42, 42, 1, 10, "speed");
     this.distance = new SimpleParameter(0, 0.5, 0.01, 0.25, "distance");
     this.color = new ColorParameter("color", new Color(255, 100, 50, 1));
     this.baseColor = new ColorParameter("color", new Color(100, 100, 50, 1));
-    this.rotateSpeed = new SimpleParameter(-50, 50, 1, 10, "rotate-speed");
+    this.rotateSpeed = new SimpleParameter(-42, 42, 1, 10, "rotate-speed");
     this.nSides = new SimpleParameter(2, 5, 1, 3, "nSides");
 
     this.params = [
@@ -68,8 +68,8 @@ export class GeoPlanets extends AbstractAlgorithm {
   }
 
   subTick(): DrawPackage {
-    let speedAdjust = this.speed.getValue() / 1000;
-    let rSpeedAdjust = this.rotateSpeed.getValue()/1000; 
+    let speedAdjust = this.speed.getValue() / 4200;
+    let rSpeedAdjust = this.rotateSpeed.getValue()/4200; 
 
 
 

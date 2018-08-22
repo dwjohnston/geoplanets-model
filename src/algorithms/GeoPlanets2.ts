@@ -1,12 +1,10 @@
-import { SimpleParameter } from "../parameters/SimpleParameter";
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
-import { DrawPackage } from '../DrawPackage';
-import { getGeoPlanetPackage, ParameterMap, createGeoPlanetParameters, GeoPlanetModel } from "../algoComponents/composites/geoplanet";
-import { makeLink } from "../algoComponents/renderers/links";
+import { DrawPackage } from './internal/DrawPackage';
+import {  GeoPlanetModel } from "../models/GeoPlanetModel";
 import { ColorParameter } from '../parameters/ColorParameter';
-import { Position, Color, ClearAll ,DrawableObject, ColorPoint} from "blacksheep-geometry";
+import {  Color, ClearAll ,DrawableObject} from "blacksheep-geometry";
 import {StaticParameter} from "../parameters/StaticParameter"; 
-import {LinkMatrix} from "../algoComponents/composites/LinkMatrix"; 
+import {LinkMatrix} from "../models/LinkMatrix"; 
 /***
 
 Separation of concerns.
@@ -77,8 +75,6 @@ export class GeoPlanetsTwo extends AbstractAlgorithm {
 
     let gp2 = this.p2.subTick(this.t); 
     let gp3 = this.p3.subTick(this.t); 
-
-    console.log(gp2, "a", gp3); 
     
     let previews : DrawableObject[] = [new ClearAll(new Color(0,0,0,0))]; 
     let paints = []; 
