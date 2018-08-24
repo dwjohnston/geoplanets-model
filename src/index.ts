@@ -7,5 +7,7 @@ export * from "./algorithms/GeoPlanets";
 export * from "./algorithms/GeoPlanets2"
 export * from "./algorithms/ThreeOrbits"; 
 export * from "./algorithms/NGeo"; 
+export * from "./algorithms/ThreeOrbitsGeo"; 
+export * from "./algorithms/EarthVenus"; 
 
 //export * from "./algoComponents/Planet"; 

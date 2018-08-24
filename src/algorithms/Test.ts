@@ -1,3 +1,4 @@
+import { AdjustParameter } from './../parameters/AdjustParam';
 
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { ColorParameter } from '../parameters/ColorParameter';
@@ -9,6 +10,8 @@ import { makeOrbitPreview } from '../functions/renderers/orbits';
 import { makePlanetPreview } from '../functions/renderers/tracers';
 import { makeLink } from '../functions/renderers/links';
 import { DrawPackage } from './internal/DrawPackage';
+import { getStandardSpeed, getStandardDistance } from '../standard/parameters';
+import { AbstractParameter } from '../parameters/AbstractParameter';
 
 
 
@@ -21,8 +24,8 @@ export class Test extends AbstractAlgorithm {
 
     center = new Position(0.5, 0.5);
 
-    speed: SimpleParameter;
-    distance: SimpleParameter;
+    speed: AdjustParameter<number>;
+    distance: AbstractParameter<number>;
     color: ColorParameter;
     baseColor: ColorParameter; 
 
@@ -30,14 +33,14 @@ export class Test extends AbstractAlgorithm {
 
 
         super("test");
-        this.speed = new SimpleParameter(-42, 42, 1, 10, "speed");
-        this.distance = new SimpleParameter(0, 0.5, 0.01, 0.25, "distance");
+        this.speed = getStandardSpeed("speed"); 
+        this.distance = getStandardDistance("distance"); 
         this.color = new ColorParameter("color", new Color(255, 100, 50, 1));
         this.baseColor = new ColorParameter("color", new Color(100, 100, 50, 1)); 
 
 
         this.params = [
-            this.speed, this.distance, this.color
+            this.speed.param, this.distance, this.color
         ]; 
 
         this.randomParams = this.params;
