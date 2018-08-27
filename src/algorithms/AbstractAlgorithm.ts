@@ -12,8 +12,8 @@ export class AbstractAlgorithm {
     t: number;
     label: string;
     params: AbstractParameter<any>[];       // Params to be rendered 
-    clearParams: AbstractParameter<any>[];  // Params that should clear the whole thing
-    randomParams: AbstractParameter<any>[]; // Params that will be randomized; 
+    clearParams: AbstractParameter<any>[] = [];  // Params that should clear the whole thing
+    randomParams: AbstractParameter<any>[] = []; // Params that will be randomized; 
 
 
     superSpeed: AbstractParameter<number> = new SimpleParameter(1, 100, 1, 5, "super-speed");

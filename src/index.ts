@@ -10,4 +10,6 @@ export * from "./algorithms/NGeo";
 export * from "./algorithms/ThreeOrbitsGeo"; 
 export * from "./algorithms/EarthVenus"; 
 
+export * from "./algorithms/Test2"; 
+
 //export * from "./algoComponents/Planet"; 

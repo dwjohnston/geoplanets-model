@@ -1,4 +1,4 @@
-import {     Position, Color, DrawableObject, Circle
+import {    ColorPoint, Position, Color, DrawableObject, Circle
 } from 'blacksheep-geometry';
 
 export function makePlanetPreview(position: Position, color: Color): DrawableObject {
@@ -7,5 +7,9 @@ export function makePlanetPreview(position: Position, color: Color): DrawableObj
 
 export function makePlanetDot(position : Position, color: Color) {
     return new Circle(0.004, color, position, true, 2);
-
 }
+
+export function makePlanetDots(colorPoints: ColorPoint[]) {
+    return colorPoints.map(cp => makePlanetDot(cp.position, cp.color)); 
+}
+

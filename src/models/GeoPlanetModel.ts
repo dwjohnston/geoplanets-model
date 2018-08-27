@@ -1,3 +1,5 @@
+import { AdjustParameter } from './../parameters/AdjustParam';
+import { AbstractPlanetModel } from './AbstractPlanetModel';
 
 import { DrawableObject, ColorPoint } from 'blacksheep-geometry';
 import { Position } from 'blacksheep-geometry';
@@ -11,7 +13,6 @@ import { ColorParameter } from '../parameters/ColorParameter';
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { RenderHint } from '../algorithms/internal/RenderMap';
 import { getStandardPhase, getStandardSpeed, getStandardDistance } from '../standard/parameters';
-import { AdjustParameter } from '../parameters/AdjustParam';
 
 export interface GeoplanetPackage {
 
@@ -23,18 +24,12 @@ export interface ParameterMap {
     [key: string]: AbstractParameter<any>
 }
 
-export class GeoPlanetModel {
+export class GeoPlanetModel extends AbstractPlanetModel {
 
-    speedActual: AbstractParameter<number> = getStandardSpeed("speed"); 
-    speed: AbstractParameter<number>; 
-    distance:  AbstractParameter<number> = getStandardDistance("distance"); 
-    color:  AbstractParameter<Color> = new ColorParameter("color", new Color(255, 255, 255, 1));
+    userSpeed: SimpleParameter; 
     nSides:  AbstractParameter<number> = new SimpleParameter(2, 5, 1, 3, "nSides");
-    rotateSpeedActual:  AbstractParameter<number> = getStandardSpeed("rotate-speed");
-    rotateSpeed; 
-    center = new Position(0.5, 0.5);
-
-    initPhase : AbstractParameter<number> = getStandardPhase("init-phase");
+    rotateSpeedActual:  AdjustParameter<number> = getStandardSpeed("rotate-speed");
+    userRotateSpeed: SimpleParameter; 
     initRotatePhase : AbstractParameter<number>= getStandardPhase("init-rotate-phase");
 
     params: AbstractParameter<any>[];
@@ -49,20 +44,16 @@ export class GeoPlanetModel {
         initPhase: boolean = true,
     ) {
 
-        this.speed = (<AdjustParameter<number>>this.speedActual).param; 
-        this.rotateSpeed = (<AdjustParameter<number>>this.rotateSpeedActual).param; 
+        super(color, speed, distance, initPhase); 
+
+        this.userRotateSpeed = <SimpleParameter>this.rotateSpeedActual.param; 
         let allParams = [
-            this.color,
-            this.speed,
-            this.distance,
-            this.rotateSpeed,
+            this.userRotateSpeed,
             this.nSides,
             this.initRotatePhase,
-            this.initPhase
         ]
 
-        var args = Array.from(arguments);
-        this.params = [];
+        let args = [rotateSpeed, nSides, initRotatePhase]; 
         args.forEach((v, i) => {
             if (v) {
                 this.params.push(allParams[i])
@@ -71,19 +62,11 @@ export class GeoPlanetModel {
 
     }
 
-
-    getRenderHint(): RenderHint {
-        return {
-            type: "planet",
-            params: this.params,
-            color: this.color
-        }
-    }
     subTick(time: number): GeoplanetPackage {
         let gp = getGeoPlanetPackage(
             time,
             this.initPhase.getValue(),
-            this.speedActual.getValue(),
+            this.speed.getValue(),
             this.distance.getValue(),
             this.center,
             this.nSides.getValue(),
