@@ -42,7 +42,7 @@ export class GeoPlanetModel extends AbstractPlanetModel {
         nSides: boolean = true,
         initRotatePhase: boolean = true,
         initPhase: boolean = true,
-        center: Position,
+        center: Position = new Position(0.5, 0.5),
     ) {
 
         super(color, speed, distance, initPhase, center);

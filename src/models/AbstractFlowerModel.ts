@@ -4,7 +4,7 @@ import { PlanetPackage, AbstractPlanetModel } from './AbstractPlanetModel';
 import { GeoPlanetModel } from './GeoPlanetModel';
 import { AbstractParameter } from "../parameters/AbstractParameter";
 import { SimpleParameter } from "../parameters/SimpleParameter";
-import { getStandardDistance, getStandardColor, } from "../standard/parameters";
+import { getStandardDistance, getStandardColor, getStandardPhase, getStandardSpeed, } from "../standard/parameters";
 import { Position } from "blacksheep-geometry";
 import { createConvexFlower, createConcaveFlower } from '../standard/shapes';
 
@@ -15,6 +15,11 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
     nSides: AbstractParameter<number> = new SimpleParameter(3, 15, 2, 3, "n-sides");
     depth = new SimpleParameter(2, 5, 1, 2, "depth");
     detune = new SimpleParameter(-0.1, 0.1, 0.01, 0, "detune");
+    rotatePhase = getStandardPhase("rotate-phase");
+
+
+    speed = getStandardSpeed("speed", 10, 100);
+
 
     params: AbstractParameter<any>[];
 
@@ -34,6 +39,7 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
         nSides: boolean,
         depth: boolean,
         detune: boolean,
+        rotatePhase: boolean,
     ) {
 
         super(color, speed, distance, initPhase, center);
@@ -41,11 +47,11 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
         let allParams: AbstractParameter<any>[] = [
             this.nSides,
             this.depth,
-            this.detune
+            this.detune,
+            this.rotatePhase,
         ];
 
-
-        let args = [nSides, depth, detune];
+        let args = [nSides, depth, detune, rotatePhase];
         args.forEach((v, i) => {
             if (v) {
                 this.params.push(allParams[i]);
@@ -60,6 +66,19 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
 
         this.regenGeoPlanet();
 
+    }
+
+
+    setNSides(nSides: number) {
+        this.nSides.updateValue(nSides);
+    }
+
+    setDepth(depth: number) {
+        this.depth.updateValue(depth);
+    }
+
+    setRotatePhase(phase: number) {
+        this.rotatePhase.updateValue(phase);
     }
 
     getRenderHint(): RenderHint {

@@ -114,6 +114,8 @@ export class AbstractPlanetModel extends AbstractModel {
         this.center = position;
     }
 
+
+
     getPosition(index: number = 0): Position {
         return this.positions[index];
     }
@@ -121,6 +123,26 @@ export class AbstractPlanetModel extends AbstractModel {
     getPositions(): Position[] {
         return this.positions;
     }
+
+
+    setSpeed(speed: number) {
+        this.userSpeed.updateValue(speed);
+    }
+
+    setColor(color: Color) {
+        this.color.updateValue(color);
+    }
+
+    setDistance(distance: number) {
+        this.distance.updateValue(distance);
+    }
+
+    setInitPhase(phase: number) {
+        this.initPhase.updateValue(phase);
+    }
+
+
+
 
 
     getRenderHint(): RenderHint {

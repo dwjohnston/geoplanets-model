@@ -20,7 +20,8 @@ export class ConcaveFlowerModel extends AbstractFlowerModel {
             this.center,
             this.depth.getValue(),
             this.color.getValue(),
-            this.speed.getValue() * 10000 ,
+            this.speed.getValue() * 10000,
+            this.rotatePhase.getValue(),
         );
     }
 
@@ -36,9 +37,10 @@ export class ConcaveFlowerModel extends AbstractFlowerModel {
         nSides: boolean,
         depth: boolean,
         detune: boolean,
+        rotatePhase: boolean,
     ) {
 
-        super(color, speed, distance, initPhase, center, nSides, depth, detune);
+        super(color, speed, distance, initPhase, center, nSides, depth, detune, rotatePhase);
     }
 
 }

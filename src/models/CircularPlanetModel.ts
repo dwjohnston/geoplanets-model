@@ -11,7 +11,7 @@ export class CircularPlanetModel extends AbstractPlanetModel {
         speed: boolean = true,
         distance: boolean = true,
         initPhase: boolean = true,
-        center: Position,
+        center: Position = new Position(0.5, 0.5),
     ) {
         super(color, speed, distance, initPhase, center);
     }

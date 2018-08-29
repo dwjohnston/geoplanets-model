@@ -23,6 +23,8 @@ export class ConvexFlowerModel extends AbstractFlowerModel {
             this.depth.getValue(),
             this.color.getValue(),
             this.speed.getValue() * 10000,
+            this.rotatePhase.getValue(),
+
 
         );
     }
@@ -36,10 +38,10 @@ export class ConvexFlowerModel extends AbstractFlowerModel {
         nSides: boolean,
         depth: boolean,
         detune: boolean,
-
+        rotatePhase: boolean,
     ) {
 
-        super(color, speed, distance, initPhase, center, nSides, depth, detune);
+        super(color, speed, distance, initPhase, center, nSides, depth, detune, rotatePhase);
     }
 
 }

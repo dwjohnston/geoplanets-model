@@ -6,15 +6,17 @@ export function createUnmovingPolygon(
     distance: number,
     center: Position,
     color: Color,
+    phaseOffset: number = 0
 ): GeoPlanetModel {
 
 
-    let model = new GeoPlanetModel();
+    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
     model.color.value = color;
     model.setCenter(center);
     model.nSides.value = nSides;
     model.distance.value = distance;
     model.userRotateSpeed.value = 0;
+    model.initRotatePhase.value = phaseOffset;
 
 
 
@@ -28,10 +30,11 @@ export function createConcaveFlower(
     center: Position,
     depth: number,
     color: Color,
-    speed: number
+    speed: number,
+    rotatePhase: number,
 ): GeoPlanetModel {
 
-    let model = new GeoPlanetModel();
+    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
     let n = (nSides - depth);
     if (n === 0) n = 1;
     let ratio = (2 * n + 1) / (n + 2);
@@ -40,6 +43,7 @@ export function createConcaveFlower(
     model.setCenter(center);
     model.nSides.value = depth;
     model.distance.value = distance;
+    model.initRotatePhase.value = rotatePhase;
     model.userRotateSpeed.value = 1 * speed;
     model.userSpeed.value = ratio * speed;
 
@@ -56,10 +60,12 @@ export function createConvexFlower(
     center: Position,
     depth: number,
     color: Color,
-    speed: number
+    speed: number,
+    rotatePhase: number,
+
 ): GeoPlanetModel {
 
-    let model = new GeoPlanetModel();
+    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
 
     let n = nSides - depth;
     if (n === 0) n = 1;
@@ -68,6 +74,7 @@ export function createConvexFlower(
     model.setCenter(center);
     model.nSides.value = depth;
     model.distance.value = distance;
+    model.initRotatePhase.value = rotatePhase;
 
     model.userRotateSpeed.value = -1 * speed;
     model.userSpeed.value = ratio * speed;

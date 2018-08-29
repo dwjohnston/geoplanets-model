@@ -17,8 +17,8 @@ export class TestTwo extends AbstractAlgorithm {
 
     center = new Position(0.5, 0.5);
     p1 = createUnmovingPolygon(8, 0.4, this.center, new Color(255, 0, 0, 0.5));
-    p2: AbstractPlanetModel = new ConcaveFlowerModel(true, true, true, true, this.p1.getPosition(), true, true, true);
-    p3: AbstractPlanetModel = new ConvexFlowerModel(true, true, true, true, this.p2.getPosition(), true, true, true);
+    p2: AbstractPlanetModel = new ConcaveFlowerModel(true, true, true, true, this.p1.getPosition(), true, true, true, true);
+    p3: AbstractPlanetModel = new ConvexFlowerModel(true, true, true, true, this.p2.getPosition(), true, true, true, true);
 
     constructor() {
         super("test-two");
@@ -28,7 +28,7 @@ export class TestTwo extends AbstractAlgorithm {
 
 
         this.clearParams = [...this.p1.params, ...this.p2.params, ...this.p3.params];
-
+        this.randomParams = this.clearParams;
         this.superSpeed.value = 10000;
 
 
