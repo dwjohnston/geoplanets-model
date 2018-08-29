@@ -14,8 +14,8 @@ export class Strings extends AbstractAlgorithm {
 
     center = new Position(0.5, 0.5);
     p1 = createUnmovingPolygon(3, 0.3, this.center, new Color(255, 100, 100, 1));
-    p2 = new ConcaveFlowerModel(true, true, true, true); 
-    p3 = new ConvexFlowerModel(true, true, true, true);
+    p2 = new ConcaveFlowerModel(true, true, true, true, true, true, true);
+    p3 = new ConvexFlowerModel(true, true, true, true, true, true, true);
 
     constructor() {
         super("strings");
@@ -49,7 +49,7 @@ export class Strings extends AbstractAlgorithm {
 
         let gp = combinePackages([this.p1, this.p2, this.p3], this.t);
 
-        
+
         return {
             0: makePlanetDots(gp.colorPoints),
             1: gp.previews,

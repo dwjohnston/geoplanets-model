@@ -1,11 +1,17 @@
 import { Color, Position } from 'blacksheep-geometry';
 import { GeoPlanetModel } from "../models/GeoPlanetModel";
 
-export function createUnmovingPolygon(nSides: number, distance: number, center: Position, color: Color): GeoPlanetModel {
+export function createUnmovingPolygon(
+    nSides: number,
+    distance: number,
+    center: Position,
+    color: Color,
+): GeoPlanetModel {
+
 
     let model = new GeoPlanetModel();
     model.color.value = color;
-    model.center = center;
+    model.setCenter(center);
     model.nSides.value = nSides;
     model.distance.value = distance;
     model.userRotateSpeed.value = 0;
@@ -16,19 +22,26 @@ export function createUnmovingPolygon(nSides: number, distance: number, center: 
 
 }
 
-export function createConcaveFlower(nSides: number, distance: number, center: Position, depth: number, color: Color): GeoPlanetModel {
+export function createConcaveFlower(
+    nSides: number,
+    distance: number,
+    center: Position,
+    depth: number,
+    color: Color,
+    speed: number
+): GeoPlanetModel {
 
     let model = new GeoPlanetModel();
-    let n = (nSides-depth); 
-    if (n===0) n =1; 
-    let ratio = (2 * n +1) / (n + 2); 
+    let n = (nSides - depth);
+    if (n === 0) n = 1;
+    let ratio = (2 * n + 1) / (n + 2);
 
     model.color.value = color;
-    model.center = center;
+    model.setCenter(center);
     model.nSides.value = depth;
     model.distance.value = distance;
-    model.userRotateSpeed.value = 1;
-    model.userSpeed.value = ratio ;
+    model.userRotateSpeed.value = 1 * speed;
+    model.userSpeed.value = ratio * speed;
 
 
 
@@ -42,20 +55,22 @@ export function createConvexFlower(
     distance: number,
     center: Position,
     depth: number,
-    color: Color): GeoPlanetModel {
+    color: Color,
+    speed: number
+): GeoPlanetModel {
 
     let model = new GeoPlanetModel();
 
-    let n = nSides - depth; 
-    if (n ===0) n = 1; 
+    let n = nSides - depth;
+    if (n === 0) n = 1;
     let ratio = (n + depth) / n; //Magic from wolfram alpha!
     model.color.value = color;
-    model.center = center;
+    model.setCenter(center);
     model.nSides.value = depth;
     model.distance.value = distance;
 
-    model.userRotateSpeed.value = -1;
-    model.userSpeed.value = ratio ;
+    model.userRotateSpeed.value = -1 * speed;
+    model.userSpeed.value = ratio * speed;
 
     return model;
 }

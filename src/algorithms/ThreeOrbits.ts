@@ -2,7 +2,7 @@ import { AbstractAlgorithm } from "./AbstractAlgorithm";
 import { CircularPlanetModel } from "../models/CircularPlanetModel";
 import { RenderMap } from "./internal/RenderMap";
 import { ColorParameter } from "../parameters/ColorParameter";
-import { Color, ClearAll, DrawableObject } from "blacksheep-geometry";
+import { Color, ClearAll, DrawableObject, Position } from "blacksheep-geometry";
 import { DrawPackage } from "./internal/DrawPackage";
 import { LinkMatrix } from "../models/LinkMatrix";
 
@@ -14,39 +14,39 @@ export class ThreeOrbits extends AbstractAlgorithm {
 
 
 
-  p1 = new CircularPlanetModel();
-  p2 = new CircularPlanetModel();
-  p3 = new CircularPlanetModel();
+  p1 = new CircularPlanetModel(true, true, true, true, new Position(0.5, 0.5));
+  p2 = new CircularPlanetModel(true, true, true, true, this.p1.getPosition());
+  p3 = new CircularPlanetModel(true, true, true, true, this.p2.getPosition());
 
-  linkMatrix: LinkMatrix;  
+  linkMatrix: LinkMatrix;
 
-  baseColor = new ColorParameter("color", new Color(0,0,0,1)); 
+  baseColor = new ColorParameter("color", new Color(0, 0, 0, 1));
   constructor() {
     super("three-orbits")
 
 
     this.params = [
-      this.linkRate, 
-      ...this.p1.params, 
-      ...this.p2.params, 
+      this.linkRate,
+      ...this.p1.params,
+      ...this.p2.params,
       ...this.p3.params
-    ]; 
+    ];
 
     console.log(this);
     this.linkMatrix = new LinkMatrix(this.linkRate);
 
-    this.randomParams = this.params; 
-    this.clearParams = this.params; 
+    this.randomParams = this.params;
+    this.clearParams = this.params;
 
-    this.initClearFunctions(); 
+    this.initClearFunctions();
   }
 
-  getRenderHint() : RenderMap {
+  getRenderHint(): RenderMap {
     return {
       "global": super.baseHint(),
       "p1": this.p1.getRenderHint(),
-      "p2": this.p2.getRenderHint(), 
-      "p3": this.p3.getRenderHint(), 
+      "p2": this.p2.getRenderHint(),
+      "p3": this.p3.getRenderHint(),
 
     }
   }
@@ -54,25 +54,23 @@ export class ThreeOrbits extends AbstractAlgorithm {
 
   subTick(): DrawPackage {
 
-    let gp1 = this.p1.subTick(this.t); 
-    this.p2.center = gp1.colorPoints[0].position; 
-    let gp2 = this.p2.subTick(this.t); 
-    this.p3.center = gp2.colorPoints[0].position; 
-    let gp3= this.p3.subTick(this.t); 
+    let gp1 = this.p1.subTick(this.t);
+    let gp2 = this.p2.subTick(this.t);
+    let gp3 = this.p3.subTick(this.t);
 
 
-    let previews : DrawableObject[] = [new ClearAll(new Color(0,0,0,0))]; 
+    let previews: DrawableObject[] = [new ClearAll(new Color(0, 0, 0, 0))];
 
-    previews.push(...gp1.previews, ...gp2.previews, ...gp3.previews); 
+    previews.push(...gp1.previews, ...gp2.previews, ...gp3.previews);
     let positions = [...gp1.colorPoints, ...gp2.colorPoints, ...gp3.colorPoints];
 
     let paints = this.linkMatrix.getLinks(this.t,
       ...positions
-    ); 
-  
+    );
+
     return {
-      0: paints, 
-      1: previews, 
+      0: paints,
+      1: previews,
     }
 
   }

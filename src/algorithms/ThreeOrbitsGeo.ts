@@ -2,7 +2,7 @@ import { GeoPlanetModel } from './../models/GeoPlanetModel';
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
 import { RenderMap } from "./internal/RenderMap";
 import { ColorParameter } from "../parameters/ColorParameter";
-import { Color, ClearAll, DrawableObject } from "blacksheep-geometry";
+import { Color, ClearAll, DrawableObject, Position } from "blacksheep-geometry";
 import { DrawPackage } from "./internal/DrawPackage";
 import { LinkMatrix } from "../models/LinkMatrix";
 
@@ -12,9 +12,9 @@ import { LinkMatrix } from "../models/LinkMatrix";
 
 export class ThreeOrbitsGeo extends AbstractAlgorithm {
 
-  p1 = new GeoPlanetModel(true, true, true, true, true, true, true, );
-  p2 = new GeoPlanetModel(true, true, true, true, true, true, true,);
-  p3 = new GeoPlanetModel(true, true, true, true, true, true, true,);
+  p1 = new GeoPlanetModel(true, true, true, true, true, true, true, new Position(0.5, 0.5));
+  p2 = new GeoPlanetModel(true, true, true, true, true, true, true, this.p1.getPosition());
+  p3 = new GeoPlanetModel(true, true, true, true, true, true, true, this.p2.getPosition());
 
   linkMatrix: LinkMatrix;
   constructor() {
@@ -51,9 +51,7 @@ export class ThreeOrbitsGeo extends AbstractAlgorithm {
   subTick(): DrawPackage {
 
     let gp1 = this.p1.subTick(this.t);
-    this.p2.center = gp1.colorPoints[0].position;
     let gp2 = this.p2.subTick(this.t);
-    this.p3.center = gp2.colorPoints[0].position;
     let gp3 = this.p3.subTick(this.t);
 
 

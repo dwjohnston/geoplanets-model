@@ -36,9 +36,27 @@ export function combinePackages(models: AbstractModel[], time: number): PlanetPa
     });
 
     return {
-        previews: previews, 
+        previews: previews,
         colorPoints: positions
     }
+}
+
+
+export function cPackages(packages: PlanetPackage[]): PlanetPackage {
+
+    let previews: DrawableObject[] = [new ClearAll(new Color(0, 0, 0, 0))];
+    let positions: ColorPoint[] = [];
+
+    packages.forEach(p => {
+        previews.push(...(p.previews));
+        positions.push(...(p.colorPoints))
+    });
+
+    return {
+        previews: previews,
+        colorPoints: positions
+    }
+
 }
 
 export class AbstractPlanetModel extends AbstractModel {
@@ -51,7 +69,8 @@ export class AbstractPlanetModel extends AbstractModel {
     userSpeed: AbstractParameter<number>;
 
 
-    center = new Position(0.5, 0.5);
+    protected center: Position;
+    protected positions: Position[] = [new Position(0.5, 0.5)];
 
     params: AbstractParameter<any>[];
 
@@ -60,8 +79,10 @@ export class AbstractPlanetModel extends AbstractModel {
         speed: boolean = true,
         distance: boolean = true,
         initPhase: boolean = true,
+        center: Position = new Position(0.5, 0.5),
     ) {
         super();
+        this.center = center;
 
         this.userSpeed = this.speed.param;
 
@@ -74,7 +95,7 @@ export class AbstractPlanetModel extends AbstractModel {
 
 
 
-        var args = Array.from(arguments);
+        var args = [color, speed, distance, initPhase];
         this.params = [];
         args.forEach((v, i) => {
             if (v) {
@@ -82,6 +103,23 @@ export class AbstractPlanetModel extends AbstractModel {
             }
         });
 
+    }
+
+
+    getCenter(): Position {
+        return this.center;
+    }
+
+    setCenter(position: Position) {
+        this.center = position;
+    }
+
+    getPosition(index: number = 0): Position {
+        return this.positions[index];
+    }
+
+    getPositions(): Position[] {
+        return this.positions;
     }
 
 

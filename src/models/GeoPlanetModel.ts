@@ -26,11 +26,11 @@ export interface ParameterMap {
 
 export class GeoPlanetModel extends AbstractPlanetModel {
 
-    userSpeed: SimpleParameter; 
-    nSides:  AbstractParameter<number> = new SimpleParameter(2, 5, 1, 3, "nSides");
-    rotateSpeedActual:  AdjustParameter<number> = getStandardSpeed("rotate-speed");
-    userRotateSpeed: SimpleParameter; 
-    initRotatePhase : AbstractParameter<number>= getStandardPhase("init-rotate-phase");
+    userSpeed: SimpleParameter;
+    nSides: AbstractParameter<number> = new SimpleParameter(2, 5, 1, 3, "nSides");
+    rotateSpeedActual: AdjustParameter<number> = getStandardSpeed("rotate-speed");
+    userRotateSpeed: SimpleParameter;
+    initRotatePhase: AbstractParameter<number> = getStandardPhase("init-rotate-phase");
 
     params: AbstractParameter<any>[];
 
@@ -42,18 +42,19 @@ export class GeoPlanetModel extends AbstractPlanetModel {
         nSides: boolean = true,
         initRotatePhase: boolean = true,
         initPhase: boolean = true,
+        center: Position,
     ) {
 
-        super(color, speed, distance, initPhase); 
+        super(color, speed, distance, initPhase, center);
 
-        this.userRotateSpeed = <SimpleParameter>this.rotateSpeedActual.param; 
+        this.userRotateSpeed = <SimpleParameter>this.rotateSpeedActual.param;
         let allParams = [
             this.userRotateSpeed,
             this.nSides,
             this.initRotatePhase,
         ]
 
-        let args = [rotateSpeed, nSides, initRotatePhase]; 
+        let args = [rotateSpeed, nSides, initRotatePhase];
         args.forEach((v, i) => {
             if (v) {
                 this.params.push(allParams[i])
@@ -68,12 +69,16 @@ export class GeoPlanetModel extends AbstractPlanetModel {
             this.initPhase.getValue(),
             this.speed.getValue(),
             this.distance.getValue(),
-            this.center,
+            this.getCenter(),
             this.nSides.getValue(),
             this.color.getValue(),
             this.initRotatePhase.getValue(),
             this.rotateSpeedActual.getValue()
         );
+
+        gp.colorPoints.forEach((v, i) => {
+            this.positions[i].updateFromPosition(v.position);
+        });
 
         return gp;
     }
@@ -149,23 +154,23 @@ export function getGeoPlanetPackage(
     color: Color,
 
     initRotationPhase: number,
-    rotationSpeed: number, 
+    rotationSpeed: number,
 
-    nPositions = 1, 
-    positionArc = Math.PI * 2, 
+    nPositions = 1,
+    positionArc = Math.PI * 2,
 ): GeoplanetPackage {
 
     let poly = getRegularPolygon(
         center,
         distance,
         basePhase(time, rotationSpeed, initRotationPhase),
-        nSides, 
+        nSides,
     );
 
 
-    let positions = []; 
+    let positions = [];
     for (let i of Array(nPositions).keys()) {
-        positions.push(poly.getPoint(basePhase(time, speed, initPhase+ i * (positionArc/nPositions))));
+        positions.push(poly.getPoint(basePhase(time, speed, initPhase + i * (positionArc / nPositions))));
     }
 
     return {
@@ -174,7 +179,7 @@ export function getGeoPlanetPackage(
             ...positions.map(pos => makePlanetPreview(pos, color))
         ],
         colorPoints: [
-            ...positions.map(pos => new ColorPoint(pos, color ))
+            ...positions.map(pos => new ColorPoint(pos, color))
         ]
     }
 
