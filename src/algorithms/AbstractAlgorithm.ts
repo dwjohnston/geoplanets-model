@@ -1,9 +1,10 @@
 import { AbstractParameter } from '../parameters/AbstractParameter';
-import { ClearAll, Color } from "blacksheep-geometry";
+import { ClearAll, Color, Rect, Position } from "blacksheep-geometry";
 import { DrawPackage } from './internal/DrawPackage';
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { ColorParameter } from '../parameters/ColorParameter';
 import { RenderHint } from './internal/RenderMap';
+import { SUPER_SPEED_MAX, SUPER_SPEED_INIT } from '../MagicNumbers';
 
 
 export class AbstractAlgorithm {
@@ -16,60 +17,52 @@ export class AbstractAlgorithm {
     randomParams: AbstractParameter<any>[] = []; // Params that will be randomized; 
 
 
-    superSpeed: AbstractParameter<number> = new SimpleParameter(1, 100, 1, 5, "super-speed");
-    linkRate : AbstractParameter<number> = new SimpleParameter(1, 20, 1, 5, "link-rate"); 
+    superSpeed: AbstractParameter<number> = new SimpleParameter(1, SUPER_SPEED_MAX, 1, SUPER_SPEED_INIT, "super-speed");
     baseColor = new ColorParameter("base-color", new Color(0, 0, 0, 1));
 
-
     requiresClear: boolean = true;
-
-
-
     constructor(label: string) {
         this.label = label;
         this.t = 0;
 
-        this.params = [this.superSpeed, this.baseColor, this.linkRate];
+        this.params = [this.superSpeed, this.baseColor];
     }
 
 
     tick(): DrawPackage {
 
         if (this.requiresClear) {
-
-            console.log("requires clear");
-
             this.requiresClear = false;
-            this.t = 0; 
+            this.t = 0;
             return {
-                0: [new ClearAll()],
-                1: [new ClearAll()]
+                1: [new ClearAll(this.baseColor.getValue())],
+                0: [new Rect(1, this.baseColor.getValue(), new Position(0, 0))]
             };
         }
 
         else {
 
             let results = {
-                0: [], 
+                0: [],
                 1: []
-            }; 
+            };
 
             for (let i of Array(this.superSpeed.getValue())) {
                 this.t++;
-                let ret =  this.subTick();
-                results[0].push(...ret[0]); 
-                results[1].push(...ret[1]); 
+                let ret = this.subTick();
+                results[0].push(...ret[0]);
+                results[1].push(...ret[1]);
             }
-            return results; 
+            return results;
         }
     }
 
-    baseHint() : RenderHint {
+    baseHint(): RenderHint {
         return {
             type: "icon",
             icon: "cog",
-            params: [this.superSpeed, this.linkRate, this.baseColor]
-          }; 
+            params: [this.superSpeed, this.baseColor]
+        };
     }
 
     subTick(): DrawPackage {
@@ -86,12 +79,16 @@ export class AbstractAlgorithm {
     }
 
     initClearFunctions() {
-        this.clearParams.forEach((p: AbstractParameter<any>) => {
+        [this.baseColor, ...this.clearParams].forEach((p: AbstractParameter<any>) => {
 
             p.getObservable().subscribe((v: any) => {
                 this.requiresClear = true;
             })
         });
+
+
+
+
     }
 
 

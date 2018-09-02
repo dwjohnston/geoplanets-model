@@ -1,3 +1,4 @@
+import { DrawModule } from './../models/DrawModule';
 import { ConcaveFlowerModel } from './../models/ConcaveFlowerModel';
 import { GeoPlanetModel } from './../models/GeoPlanetModel';
 
@@ -15,11 +16,11 @@ export class Strings extends AbstractAlgorithm {
 
     center = new Position(0.5, 0.5);
     p1 = createUnmovingPolygon(8, 0.5, this.center, new Color(255, 255, 255, 0.5), Math.PI / 8);
-    p2 = new ConvexFlowerModel(true, true, true, true, this.center, true, true, true, true);
-    p3 = new ConvexFlowerModel(true, true, true, true, this.center, true, true, true, true);
+    p2 = new ConvexFlowerModel();
+    p3 = new ConvexFlowerModel();
 
 
-    linkMatrix = new PulseLinkMatrix();
+    linkMatrix = new DrawModule();
 
 
     firstRandom = true;
@@ -27,6 +28,10 @@ export class Strings extends AbstractAlgorithm {
     constructor() {
         super("strings");
 
+        this.p2.setRenderHint(true, true, true, true, true, true, true, true);
+        this.p3.setRenderHint(true, true, true, true, true, true, true, true);
+
+        this.linkMatrix.setRenderHint();
 
 
 
@@ -41,12 +46,20 @@ export class Strings extends AbstractAlgorithm {
         this.p3.setDepth(3);
         this.p3.setRotatePhase((85 * Math.PI) / 256);
 
+        this.linkMatrix.traceMaker.drawRate.value = 1;
+        this.linkMatrix.traceMaker.size.value = 0.05;
+
         this.clearParams = [
-            ...this.linkMatrix.params,
-            ...this.p2.params,
-            ...this.p3.params
+            ...this.linkMatrix.getRenderParams(),
+            ...this.p2.getRenderParams(),
+            ...this.p3.getRenderParams()
         ];
-        this.randomParams = this.clearParams;
+        this.randomParams = [
+            ...this.linkMatrix.getRandomParams(),
+            ...this.p2.getRandomParams(),
+            ...this.p3.getRandomParams()
+        ]
+
 
         super.initClearFunctions();
     }
@@ -64,9 +77,7 @@ export class Strings extends AbstractAlgorithm {
 
         return {
             "global": super.baseHint(),
-
             "links": this.linkMatrix.getRenderHint(),
-
             "p2": this.p2.getRenderHint(),
             "p3": this.p3.getRenderHint()
 
@@ -89,7 +100,7 @@ export class Strings extends AbstractAlgorithm {
         let links = this.linkMatrix.getLinks(this.t, ...gp.colorPoints);
 
         let res = {
-            0: [...makePlanetDots(gp.colorPoints), ...links],
+            0: [...this.linkMatrix.getTraces(this.t, ...gp.colorPoints), ...links],
             1: gp.previews,
         }
         return res;

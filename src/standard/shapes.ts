@@ -1,5 +1,7 @@
+import { SPEED_DIVISOR, DETUNE_DIVISOR, FLOWER_SPEED_DIVISOR } from './../MagicNumbers';
 import { Color, Position } from 'blacksheep-geometry';
 import { GeoPlanetModel } from "../models/GeoPlanetModel";
+
 
 export function createUnmovingPolygon(
     nSides: number,
@@ -10,15 +12,13 @@ export function createUnmovingPolygon(
 ): GeoPlanetModel {
 
 
-    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
-    model.color.value = color;
+    let model = new GeoPlanetModel();
     model.setCenter(center);
-    model.nSides.value = nSides;
-    model.distance.value = distance;
-    model.userRotateSpeed.value = 0;
-    model.initRotatePhase.value = phaseOffset;
-
-
+    model.setNSides(nSides);
+    model.setDistance(distance);
+    model.setColor(color);
+    model.setInitPhase(phaseOffset);
+    model.setRotateSpeed(0);
 
     return model;
 
@@ -32,25 +32,26 @@ export function createConcaveFlower(
     color: Color,
     speed: number,
     rotatePhase: number,
+    detune = 0,
 ): GeoPlanetModel {
 
-    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
+    let model = new GeoPlanetModel();
     let n = (nSides - depth);
-    if (n === 0) n = 1;
-    let ratio = (2 * n + 1) / (n + 2);
+    if (n <= 0) n = 1;
+    let ratio = ((depth - 1) * n + 1) / (n + depth - 1);
+    ratio = ratio * (1 + (detune / DETUNE_DIVISOR));
 
-    model.color.value = color;
+
+    model.setDistance(distance);
+    model.setColor(color);
+    model.setNSides(depth);
     model.setCenter(center);
-    model.nSides.value = depth;
-    model.distance.value = distance;
-    model.initRotatePhase.value = rotatePhase;
-    model.userRotateSpeed.value = 1 * speed;
-    model.userSpeed.value = ratio * speed;
+    model.setInitRotatePhase(rotatePhase);
 
 
-
-
-
+    let adjSpeed = ((speed / FLOWER_SPEED_DIVISOR) / ratio) - 1;
+    model.setRotateSpeed(1 * adjSpeed);
+    model.setSpeed(ratio * adjSpeed);
     return model;
 }
 
@@ -62,22 +63,28 @@ export function createConvexFlower(
     color: Color,
     speed: number,
     rotatePhase: number,
+    detune = 0,
+
 
 ): GeoPlanetModel {
 
-    let model = new GeoPlanetModel(false, false, false, false, false, false, false, center);
+    let model = new GeoPlanetModel();
 
     let n = nSides - depth;
-    if (n === 0) n = 1;
+    if (n <= 0) n = 1;
     let ratio = (n + depth) / n; //Magic from wolfram alpha!
-    model.color.value = color;
-    model.setCenter(center);
-    model.nSides.value = depth;
-    model.distance.value = distance;
-    model.initRotatePhase.value = rotatePhase;
+    ratio = ratio * (1 + (detune / DETUNE_DIVISOR));
 
-    model.userRotateSpeed.value = -1 * speed;
-    model.userSpeed.value = ratio * speed;
+    model.setDistance(distance);
+    model.setColor(color);
+    model.setNSides(depth);
+    model.setCenter(center);
+    model.setInitRotatePhase(rotatePhase);
+
+    let adjSpeed = ((speed / FLOWER_SPEED_DIVISOR)) / (ratio - 1);
+
+    model.setRotateSpeed(-1 * adjSpeed);
+    model.setSpeed(ratio * adjSpeed);
 
     return model;
 }

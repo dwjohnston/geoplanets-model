@@ -1,9 +1,12 @@
+import { DrawModule } from './../models/DrawModule';
 import { SimpleParameter } from "../parameters/SimpleParameter";
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
 import { DrawPackage } from './internal/DrawPackage';
 import { getGeoPlanetPackage, GeoPlanetModel } from "../models/GeoPlanetModel";
 import { Color, ClearAll, DrawableObject, ColorPoint, Position } from "blacksheep-geometry";
 import { LinkMatrix } from "../models/LinkMatrix";
+import { PulseLinkMatrix } from "../models/PulseLinkMatrix";
+import { SPEED_DIVISOR } from '../MagicNumbers';
 
 /***
 
@@ -17,33 +20,31 @@ export class NGeo extends AbstractAlgorithm {
 
 
   p1: GeoPlanetModel = new GeoPlanetModel(
-    true, true, true, true, true, false, false, new Position(0.5, 0.5)
   );
   p2: GeoPlanetModel = new GeoPlanetModel(
-    true, true, true, true, true, false, false, new Position(0.5, 0.5)
   );
 
-  nPlanets = new SimpleParameter(2, 6, 1, 2, "n-planets");
+  nPlanets = new SimpleParameter(2, 4, 1, 2, "n-planets");
   arc = new SimpleParameter(0, 2 * Math.PI, 0.01, Math.PI * 2, "arc");
 
-  nPlanets2 = new SimpleParameter(2, 6, 1, 2, "n-planets");
+  nPlanets2 = new SimpleParameter(2, 4, 1, 2, "n-planets");
 
 
-  linker: LinkMatrix;
+  linker = new DrawModule();
 
   constructor() {
     super("n-geo");
 
-    this.linker = new LinkMatrix(this.linkRate);
     this.p1.params.push(this.nPlanets, this.arc);
     this.p2.params.push(this.nPlanets2);
 
-    this.params = [this.linkRate];
+    this.params = [...this.linker.getParams()];
     this.params.push(...this.p1.params);
     this.params.push(...this.p2.params);
-    this.params.push(this.baseColor);
 
-
+    this.p1.setRenderHint(true, true, true, true, true, true, true, true, true);
+    this.p2.setRenderHint(true, true, true, true, true, true, true, true);
+    this.linker.setRenderHint();
 
     this.randomParams = this.params;
     this.clearParams = this.params;
@@ -58,6 +59,7 @@ export class NGeo extends AbstractAlgorithm {
 
     return {
       "global": super.baseHint(),
+      "linker": this.linker.getRenderHint(),
       "p1": p1,
       "p2": this.p2.getRenderHint(),
     }
@@ -69,13 +71,13 @@ export class NGeo extends AbstractAlgorithm {
     let gp1 = getGeoPlanetPackage(
       this.t,
       this.p1.initPhase.getValue(),
-      this.p1.speed.getValue() / 10000,
+      this.p1.speed.getValue() / SPEED_DIVISOR,
       this.p1.distance.getValue(),
       this.p1.getCenter(),
       this.p1.nSides.getValue(),
       this.p1.color.getValue(),
       this.p1.initRotatePhase.getValue(),
-      this.p1.userRotateSpeed.getValue() / 1000,
+      this.p1.userRotateSpeed.getValue() / SPEED_DIVISOR,
       this.nPlanets.getValue(),
       this.arc.getValue(),
     );
@@ -91,13 +93,13 @@ export class NGeo extends AbstractAlgorithm {
       let pgp = getGeoPlanetPackage(
         this.t,
         this.p2.initPhase.getValue(),
-        this.p2.speed.getValue() / 10000,
+        this.p2.speed.getValue() / SPEED_DIVISOR,
         this.p2.distance.getValue(),
         cp.position,
         this.p2.nSides.getValue(),
         this.p2.color.getValue(),
         this.p2.initRotatePhase.getValue(),
-        this.p2.userRotateSpeed.getValue() / 1000,
+        this.p2.userRotateSpeed.getValue() / SPEED_DIVISOR,
         this.nPlanets2.getValue(),
         Math.PI * 2,
       );
@@ -112,7 +114,7 @@ export class NGeo extends AbstractAlgorithm {
     previews.push(...gp1.previews, ...gp2.previews);
     let positions = [...gp1.colorPoints, ...gp2.colorPoints];
 
-    paints = this.linker.getLinks(this.t,
+    paints = this.linker.getTraces(this.t,
       ...positions
     );
 

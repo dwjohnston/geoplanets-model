@@ -12,5 +12,6 @@ export * from "./algorithms/EarthVenus";
 
 export * from "./algorithms/Test2";
 export * from "./algorithms/Strings";
+export * from "./algorithms/Flowers";
 
 //export * from "./algoComponents/Planet"; 

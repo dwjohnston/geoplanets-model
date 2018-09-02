@@ -1,6 +1,6 @@
 {
   "name": "geoplanets-model",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Framework agnostic data/algorithm model for the geoplanets interactive art generator",
   "main": "lib/index.js",
   "scripts": {

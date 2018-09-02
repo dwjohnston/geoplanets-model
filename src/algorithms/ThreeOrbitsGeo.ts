@@ -1,3 +1,5 @@
+import { DrawModule } from './../models/DrawModule';
+import { TraceMaker } from './../models/TraceMaker';
 import { GeoPlanetModel } from './../models/GeoPlanetModel';
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
 import { RenderMap } from "./internal/RenderMap";
@@ -5,6 +7,7 @@ import { ColorParameter } from "../parameters/ColorParameter";
 import { Color, ClearAll, DrawableObject, Position } from "blacksheep-geometry";
 import { DrawPackage } from "./internal/DrawPackage";
 import { LinkMatrix } from "../models/LinkMatrix";
+import { PulseLinkMatrix } from '../models/PulseLinkMatrix';
 
 
 
@@ -12,26 +15,37 @@ import { LinkMatrix } from "../models/LinkMatrix";
 
 export class ThreeOrbitsGeo extends AbstractAlgorithm {
 
-  p1 = new GeoPlanetModel(true, true, true, true, true, true, true, new Position(0.5, 0.5));
-  p2 = new GeoPlanetModel(true, true, true, true, true, true, true, this.p1.getPosition());
-  p3 = new GeoPlanetModel(true, true, true, true, true, true, true, this.p2.getPosition());
+  p1 = new GeoPlanetModel();
+  p2 = new GeoPlanetModel();
+  p3 = new GeoPlanetModel();
 
-  linkMatrix: LinkMatrix;
+  linkMatrix = new DrawModule();
+
   constructor() {
-    super("three-orbits-geo")
+    super("three-orbits-geo");
 
+
+    this.p2.setCenter(this.p1.getPosition());
+    this.p3.setCenter(this.p2.getPosition());
+
+    this.p1.setRenderHint(true, true, true, true, true, true, true);
+    this.p2.setRenderHint(true, true, true, true, true, true, true);
+    this.p3.setRenderHint(true, true, true, true, true, true, true);
+    this.linkMatrix.setRenderHint(true, true, false, true, false, false, false, false);
 
     this.params = [
-      this.linkRate,
-      ...this.p1.params,
-      ...this.p2.params,
-      ...this.p3.params
+      ...this.linkMatrix.getRenderParams(),
+      ...this.p1.getRenderParams(),
+      ...this.p2.getRenderParams(),
+      ...this.p3.getRenderParams(),
     ];
 
-    console.log(this);
-    this.linkMatrix = new LinkMatrix(this.linkRate);
-
-    this.randomParams = this.params;
+    this.randomParams = [
+      ...this.linkMatrix.getRandomParams(),
+      ...this.p1.getRandomParams(),
+      ...this.p2.getRandomParams(),
+      ...this.p3.getRandomParams()
+    ];
     this.clearParams = this.params;
 
     this.initClearFunctions();
@@ -40,6 +54,7 @@ export class ThreeOrbitsGeo extends AbstractAlgorithm {
   getRenderHint(): RenderMap {
     return {
       "global": super.baseHint(),
+      "link": this.linkMatrix.getRenderHint(),
       "p1": this.p1.getRenderHint(),
       "p2": this.p2.getRenderHint(),
       "p3": this.p3.getRenderHint(),
@@ -63,6 +78,8 @@ export class ThreeOrbitsGeo extends AbstractAlgorithm {
     let paints = this.linkMatrix.getLinks(this.t,
       ...positions
     );
+
+    paints.push(...this.linkMatrix.getTraces(this.t, ...positions));
 
     return {
       0: paints,

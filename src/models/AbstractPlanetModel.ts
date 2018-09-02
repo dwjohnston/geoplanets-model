@@ -5,7 +5,7 @@ import { AbstractParameter } from '../parameters/AbstractParameter';
 import { SimpleParameter } from '../parameters/SimpleParameter';
 import { ColorParameter } from '../parameters/ColorParameter';
 import { RenderHint } from '../algorithms/internal/RenderMap';
-import { getStandardSpeed, getStandardDistance, getStandardPhase } from '../standard/parameters';
+import { getStandardSpeed, getStandardDistance, getStandardPhase, getStandardColor } from '../standard/parameters';
 
 export interface PlanetPackage {
     previews: DrawableObject[];
@@ -25,12 +25,9 @@ export function combinePackages(models: AbstractModel[], time: number): PlanetPa
 
     let previews: DrawableObject[] = [new ClearAll(new Color(0, 0, 0, 0))];
     let positions: ColorPoint[] = [];
+
     models.forEach((m: AbstractPlanetModel) => {
-
-
         let gp = m.subTick(time);
-
-
         previews.push(...gp.previews);
         positions.push(...gp.colorPoints)
     });
@@ -60,11 +57,10 @@ export function cPackages(packages: PlanetPackage[]): PlanetPackage {
 }
 
 export class AbstractPlanetModel extends AbstractModel {
-    speed: AdjustParameter<number> = getStandardSpeed();
-
-    distance: AbstractParameter<number> = getStandardDistance();
-    color: AbstractParameter<Color> = new ColorParameter("color", new Color(255, 255, 255, 1));
-    initPhase: AbstractParameter<number> = getStandardPhase();
+    speed: AdjustParameter<number>;
+    distance: AbstractParameter<number>;
+    color: AbstractParameter<Color>;
+    initPhase: AbstractParameter<number>;
 
     userSpeed: AbstractParameter<number>;
 
@@ -75,33 +71,27 @@ export class AbstractPlanetModel extends AbstractModel {
     params: AbstractParameter<any>[];
 
     constructor(
-        color: boolean = true,
-        speed: boolean = true,
-        distance: boolean = true,
-        initPhase: boolean = true,
+        speed: AdjustParameter<number> = getStandardSpeed(),
+        distance: AbstractParameter<number> = getStandardDistance(),
+        initPhase: AbstractParameter<number> = getStandardPhase(),
+        color: AbstractParameter<Color> = getStandardColor(),
         center: Position = new Position(0.5, 0.5),
     ) {
         super();
         this.center = center;
 
+        this.speed = speed;
+        this.distance = distance;
+        this.initPhase = initPhase;
+        this.color = color;
         this.userSpeed = this.speed.param;
 
-        let allParams = [
-            this.color,
+        this.params = [
             this.userSpeed,
             this.distance,
-            this.initPhase
+            this.initPhase,
+            this.color
         ];
-
-
-
-        var args = [color, speed, distance, initPhase];
-        this.params = [];
-        args.forEach((v, i) => {
-            if (v) {
-                this.params.push(allParams[i])
-            }
-        });
 
     }
 
@@ -148,7 +138,7 @@ export class AbstractPlanetModel extends AbstractModel {
     getRenderHint(): RenderHint {
         return {
             type: "planet",
-            params: this.params,
+            params: this.renderParams,
             color: this.color
         }
     }

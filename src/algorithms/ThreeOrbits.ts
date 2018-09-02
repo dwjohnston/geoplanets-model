@@ -1,3 +1,4 @@
+import { DrawModule } from './../models/DrawModule';
 import { AbstractAlgorithm } from "./AbstractAlgorithm";
 import { CircularPlanetModel } from "../models/CircularPlanetModel";
 import { RenderMap } from "./internal/RenderMap";
@@ -5,6 +6,7 @@ import { ColorParameter } from "../parameters/ColorParameter";
 import { Color, ClearAll, DrawableObject, Position } from "blacksheep-geometry";
 import { DrawPackage } from "./internal/DrawPackage";
 import { LinkMatrix } from "../models/LinkMatrix";
+import { PulseLinkMatrix } from "../models/PulseLinkMatrix";
 
 
 
@@ -14,36 +16,39 @@ export class ThreeOrbits extends AbstractAlgorithm {
 
 
 
-  p1 = new CircularPlanetModel(true, true, true, true, new Position(0.5, 0.5));
-  p2 = new CircularPlanetModel(true, true, true, true, this.p1.getPosition());
-  p3 = new CircularPlanetModel(true, true, true, true, this.p2.getPosition());
+  p1 = new CircularPlanetModel();
+  p2 = new CircularPlanetModel();
+  p3 = new CircularPlanetModel();
 
-  linkMatrix: LinkMatrix;
+  linkMatrix = new DrawModule();
 
-  baseColor = new ColorParameter("color", new Color(0, 0, 0, 1));
   constructor() {
     super("three-orbits")
 
+    this.p1.setRenderHint(true, true, false, true);
+    this.p2.setRenderHint(true, true, false, true);
+    this.p3.setRenderHint(true, true, false, true);
+    this.linkMatrix.setRenderHint(true, true, false, true, false, false, false, false);
+
+    this.p2.setCenter(this.p1.getPosition());
+    this.p3.setCenter(this.p2.getPosition());
 
     this.params = [
-      this.linkRate,
-      ...this.p1.params,
-      ...this.p2.params,
-      ...this.p3.params
+      ...this.p1.getRenderParams(),
+      ...this.p2.getRenderParams(),
+      ...this.p3.getRenderParams(),
+      ...this.linkMatrix.getRenderParams(),
     ];
 
-    console.log(this);
-    this.linkMatrix = new LinkMatrix(this.linkRate);
-
-    this.randomParams = this.params;
     this.clearParams = this.params;
-
+    this.randomParams = this.params;
     this.initClearFunctions();
   }
 
   getRenderHint(): RenderMap {
     return {
       "global": super.baseHint(),
+      "link": this.linkMatrix.getRenderHint(),
       "p1": this.p1.getRenderHint(),
       "p2": this.p2.getRenderHint(),
       "p3": this.p3.getRenderHint(),

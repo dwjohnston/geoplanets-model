@@ -4,16 +4,14 @@ import { DrawPackage } from './internal/DrawPackage';
 import { getGeoPlanetPackage } from "../models/GeoPlanetModel";
 import { makeLink, makeLink2 } from "../functions/renderers/links";
 import { ColorParameter } from '../parameters/ColorParameter';
-import { Position, Color, ClearAll ,DrawableObject} from "blacksheep-geometry";
+import { Position, Color, ClearAll, DrawableObject } from "blacksheep-geometry";
 
 
-/***
-
-Separation of concerns.
-
-Parameter objects shouldn't have to worry about how they're being glued to the the DOM?
-
-*/
+/**
+ * 
+ * 
+ * Nb, this one is using manual calls of functions etc, but it's working, sooo. 
+ */
 export class GeoPlanets extends AbstractAlgorithm {
 
 
@@ -39,14 +37,14 @@ export class GeoPlanets extends AbstractAlgorithm {
     this.nSides = new SimpleParameter(2, 5, 1, 3, "nSides");
 
     this.params = [
-      this.speed, this.distance, this.color,  this.rotateSpeed, this.nSides
+      this.speed, this.distance, this.color, this.rotateSpeed, this.nSides
     ];
 
     this.randomParams = this.params;
     this.clearParams = this.params;
 
 
-    this.initClearFunctions(); 
+    this.initClearFunctions();
   }
 
 
@@ -59,6 +57,7 @@ export class GeoPlanets extends AbstractAlgorithm {
         params: [this.baseColor]
       },
 
+
       "p1": {
         type: "planet",
         params: this.params,
@@ -69,7 +68,7 @@ export class GeoPlanets extends AbstractAlgorithm {
 
   subTick(): DrawPackage {
     let speedAdjust = this.speed.getValue() / 4200;
-    let rSpeedAdjust = this.rotateSpeed.getValue()/4200; 
+    let rSpeedAdjust = this.rotateSpeed.getValue() / 4200;
 
 
 
@@ -100,11 +99,11 @@ export class GeoPlanets extends AbstractAlgorithm {
     let all = []
 
     all.push(new ClearAll(new Color(144, 0, 0, 0.1)));
-    all.push(...gp.previews, ...gp2.previews); 
+    all.push(...gp.previews, ...gp2.previews);
     return {
       1: all,
       0: [makeLink2(
-        gp.colorPoints[0], 
+        gp.colorPoints[0],
         gp2.colorPoints[0]
       )]
 

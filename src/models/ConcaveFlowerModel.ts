@@ -1,13 +1,11 @@
+import { SPEED_DIVISOR } from './../MagicNumbers';
 import { AbstractFlowerModel } from './AbstractFlowerModel';
-import { AbstractModel } from './AbstractModel';
-import { RenderHint } from '../algorithms/internal/RenderMap';
-import { PlanetPackage, AbstractPlanetModel } from './AbstractPlanetModel';
-import { GeoPlanetModel } from './GeoPlanetModel';
 import { AbstractParameter } from "../parameters/AbstractParameter";
 import { SimpleParameter } from "../parameters/SimpleParameter";
-import { getStandardDistance, getStandardColor, } from "../standard/parameters";
-import { Position } from "blacksheep-geometry";
-import { createConvexFlower, createConcaveFlower } from '../standard/shapes';
+import { getStandardDistance, getStandardColor, getStandardPhase, getStandardSpeed, } from "../standard/parameters";
+import { Position, Color } from "blacksheep-geometry";
+import { createConcaveFlower } from '../standard/shapes';
+import { AdjustParameter } from '../parameters/AdjustParam';
 
 
 
@@ -20,27 +18,26 @@ export class ConcaveFlowerModel extends AbstractFlowerModel {
             this.center,
             this.depth.getValue(),
             this.color.getValue(),
-            this.speed.getValue() * 10000,
+            this.speed.getValue() * SPEED_DIVISOR,
             this.rotatePhase.getValue(),
+            this.detune.getValue(),
         );
     }
 
-
-    nSides: AbstractParameter<number> = new SimpleParameter(3, 15, 2, 3, "n-sides");
-
     constructor(
-        color: boolean,
-        speed: boolean,
-        distance: boolean,
-        initPhase: boolean,
-        center: Position,
-        nSides: boolean,
-        depth: boolean,
-        detune: boolean,
-        rotatePhase: boolean,
+        speed: AdjustParameter<number> = getStandardSpeed(),
+        distance: AbstractParameter<number> = getStandardDistance(),
+        initPhase: AbstractParameter<number> = getStandardPhase(),
+        color: AbstractParameter<Color> = getStandardColor(),
+        center: Position = new Position(0.5, 0.5),
+        nSides: AbstractParameter<number> = new SimpleParameter(3, 15, 2, 3, "n-sides"),
+        depth = new SimpleParameter(2, 5, 1, 2, "depth"),
+        detune = new SimpleParameter(-0.5, 0.5, 0.01, 0, "detune"),
+        rotatePhase = getStandardPhase("rotate-phase"),
+
     ) {
 
-        super(color, speed, distance, initPhase, center, nSides, depth, detune, rotatePhase);
+        super(speed, distance, initPhase, color, center, nSides, depth, detune, rotatePhase);
     }
 
 }

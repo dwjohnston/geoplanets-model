@@ -5,20 +5,21 @@ import { GeoPlanetModel } from './GeoPlanetModel';
 import { AbstractParameter } from "../parameters/AbstractParameter";
 import { SimpleParameter } from "../parameters/SimpleParameter";
 import { getStandardDistance, getStandardColor, getStandardPhase, getStandardSpeed, } from "../standard/parameters";
-import { Position } from "blacksheep-geometry";
+import { Position, Color } from "blacksheep-geometry";
 import { createConvexFlower, createConcaveFlower } from '../standard/shapes';
+import { AdjustParameter } from '../parameters/AdjustParam';
 
 
 
 export class AbstractFlowerModel extends AbstractPlanetModel {
 
-    nSides: AbstractParameter<number> = new SimpleParameter(3, 15, 2, 3, "n-sides");
-    depth = new SimpleParameter(2, 5, 1, 2, "depth");
-    detune = new SimpleParameter(-0.1, 0.1, 0.01, 0, "detune");
-    rotatePhase = getStandardPhase("rotate-phase");
+    nSides: AbstractParameter<number>;
+    depth: AbstractParameter<number>;
+    detune: AbstractParameter<number>;
+    rotatePhase: AbstractParameter<number>;
 
 
-    speed = getStandardSpeed("speed", 10, 100);
+    // speed = getStandardSpeed("speed", 10, 100);
 
 
     params: AbstractParameter<any>[];
@@ -31,37 +32,40 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
     }
 
     constructor(
-        color: boolean,
-        speed: boolean,
-        distance: boolean,
-        initPhase: boolean,
-        center: Position,
-        nSides: boolean,
-        depth: boolean,
-        detune: boolean,
-        rotatePhase: boolean,
+        speed: AdjustParameter<number> = getStandardSpeed(),
+        distance: AbstractParameter<number> = getStandardDistance(),
+        initPhase: AbstractParameter<number> = getStandardPhase(),
+        color: AbstractParameter<Color> = getStandardColor(),
+        center: Position = new Position(0.5, 0.5),
+        nSides: AbstractParameter<number> = new SimpleParameter(3, 15, 2, 3, "n-leaves"),
+        depth = new SimpleParameter(2, 5, 1, 2, "depth"),
+        detune = new SimpleParameter(-0.5, 0.5, 0.01, 0, "detune"),
+        rotatePhase = getStandardPhase("rotate-phase"),
+
     ) {
 
-        super(color, speed, distance, initPhase, center);
+        super(
+            speed,
+            distance,
+            initPhase,
+            color,
+            center,
+        );
 
-        let allParams: AbstractParameter<any>[] = [
+        this.nSides = nSides;
+        this.depth = depth;
+        this.detune = detune;
+        this.rotatePhase = rotatePhase;
+
+        this.params.push(
             this.nSides,
             this.depth,
             this.detune,
-            this.rotatePhase,
-        ];
+            this.rotatePhase
+        );
 
-        let args = [nSides, depth, detune, rotatePhase];
-        args.forEach((v, i) => {
-            if (v) {
-                this.params.push(allParams[i]);
-            }
-        });
-
-
-        this.params.forEach(o => o.getObservable().subscribe(() => {
+        this.params.forEach(o => o.getObservable().subscribe((v) => {
             this.regenGeoPlanet();
-
         }));
 
         this.regenGeoPlanet();
@@ -81,13 +85,6 @@ export class AbstractFlowerModel extends AbstractPlanetModel {
         this.rotatePhase.updateValue(phase);
     }
 
-    getRenderHint(): RenderHint {
-        return {
-            type: "planet",
-            params: this.params,
-            color: this.color
-        }
-    }
     subTick(time: number): PlanetPackage {
         let gp = this.p.subTick(time);
 
